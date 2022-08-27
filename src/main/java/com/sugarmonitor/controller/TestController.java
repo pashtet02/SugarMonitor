@@ -24,14 +24,4 @@ public class TestController {
         return response;
     }
 
-    @GetMapping()
-    public ResponseEntity<String> getCommandExecuted(@RequestParam(value = "command", required = false) String command) {
-        RestTemplate restTemplate = new RestTemplate();
-        final String uri = "https://sugarinpashtet2.herokuapp.com/";
-
-        ResponseEntity<String> response
-                = restTemplate.getForEntity(uri + "/api/v1/entries/sgv.json?" + command, String.class);
-        return response;
-    }
-
 }
