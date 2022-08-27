@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,12 +15,22 @@ import org.springframework.web.client.RestTemplate;
 public class TestController {
 
     @GetMapping()
-    public ResponseEntity<String> getTweetsBlocking() {
+    public ResponseEntity<String> pebble() {
         RestTemplate restTemplate = new RestTemplate();
         final String uri = "https://sugarinpashtet2.herokuapp.com/";
 
         ResponseEntity<String> response
                 = restTemplate.getForEntity(uri + "/pebble", String.class);
+        return response;
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> getCommandExecuted(@RequestParam(value = "command", required = false) String command) {
+        RestTemplate restTemplate = new RestTemplate();
+        final String uri = "https://sugarinpashtet2.herokuapp.com/";
+
+        ResponseEntity<String> response
+                = restTemplate.getForEntity(uri + "/api/v1/entries/sgv.json?" + command, String.class);
         return response;
     }
 
