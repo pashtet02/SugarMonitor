@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,8 @@ public class DocumentController {
 
   @GetMapping("/entries")
   public List<Entry> getAllEntry() {
-    List<Entry> all = entryRepository.findAll();
+    Date date = new Date(System.currentTimeMillis() / 1000 - 24 * 60 * 60 * 1000);
+    List<Entry> all = entryRepository.findAllForDate(date);
     return all.stream().limit(50).collect(Collectors.toList());
   }
 
