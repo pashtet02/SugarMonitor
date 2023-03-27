@@ -1,5 +1,6 @@
 package com.sugarmonitor.model;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Entry {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   private String device;
 
@@ -41,4 +41,7 @@ public class Entry {
 
   private long utcOffset;
 
+  public LocalDateTime getSysTime() {
+    return LocalDateTime.parse(sysTime.replace("Z", ""));
+  }
 }

@@ -2,14 +2,12 @@ package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.repos.EntryRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @RestController()
 @RequiredArgsConstructor
@@ -27,5 +25,4 @@ public class DocumentController {
   public Entry getEntryById(@PathVariable final String entryId) {
     return entryRepository.findById(entryId).orElseGet(Entry::new);
   }
-
 }
