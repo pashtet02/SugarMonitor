@@ -70,12 +70,23 @@
                 column: {
                     pointPadding: 0.2,
                     borderWidth: 0
+                },
+                series: {
+                    lineWidth: 3
                 }
             },
             series: [{
                 name: '',
-                color: '#00ff48',
-                data: [[${sugarMap.values()}]]
+                data: [[${sugarMap.values()}]],
+                zones: [{
+                    value: 3.8,
+                    color: '#f75c5c'
+                }, {
+                    value: 9,
+                    color: '#94ec7c'
+                }, {
+                    color: '#ede47d'
+                }]
             }]
         });
     });

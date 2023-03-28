@@ -8,7 +8,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +30,15 @@ public class GraphController {
     Date to = Date.from(Instant.now());
 
     List<Entry> data = entryRepository.findByDateBetween(from.getTime(), to.getTime());
-    data.forEach(entry -> {
-      map.put(convertEntryDateIntoStringOnGraph(entry),  entry.getSgvInMmol());
-    });
+    data.forEach(
+        entry -> {
+          map.put(convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol());
+        });
 
-    List<Entry> xAxisValues = data.stream().sorted((Comparator.comparingLong(Entry::getDate))).collect(Collectors.toList());
+    List<Entry> xAxisValues =
+        data.stream()
+            .sorted((Comparator.comparingLong(Entry::getDate)))
+            .collect(Collectors.toList());
 
     model.addAttribute("sugarMap", map);
     model.addAttribute("xAxisValues", xAxisValues);
@@ -51,32 +54,31 @@ public class GraphController {
   }
 
   public String convertEntryDateIntoStringOnGraph(Entry entry) {
-    LocalDateTime localDateTime = new Date(entry.getDate()).toInstant()
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime();
+    LocalDateTime localDateTime =
+        new Date(entry.getDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
     String dayOfMonth = null;
     if (localDateTime.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
-      dayOfMonth = localDateTime.getDayOfMonth() + " " + localDateTime.getMonth().toString().substring(0, 3);
+      dayOfMonth =
+          localDateTime.getDayOfMonth() + " " + localDateTime.getMonth().toString().substring(0, 3);
     }
 
     int hour = localDateTime.getHour();
-    //To avoid time like 2:1 or 14:6 or 2:55
+    // To avoid time like 2:1 or 14:6 or 2:55
     String hourStr = String.valueOf(hour);
     if (hour < 10) {
       hourStr = "0" + hourStr;
     }
     int minute = localDateTime.getMinute();
-    //To avoid time like 2:1 or 14:6 or 2:55
+    // To avoid time like 2:1 or 14:6 or 2:55
     String minuteStr = String.valueOf(minute);
     if (minute < 10) {
       minuteStr = "0" + minuteStr;
     }
 
     String result = hourStr + ":" + minuteStr;
-    if ( dayOfMonth != null){
+    if (dayOfMonth != null) {
       result = dayOfMonth + " " + result;
-
     }
     return result;
   }
