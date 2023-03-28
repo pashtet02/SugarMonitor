@@ -44,4 +44,8 @@ public class Entry {
   public LocalDateTime getSysTime() {
     return LocalDateTime.parse(sysTime.replace("Z", ""));
   }
+
+  public Double getSgvInMmol() {
+    return (double) sgv / (double) 18;
+  }
 }
