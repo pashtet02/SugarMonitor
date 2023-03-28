@@ -39,6 +39,9 @@
             title: {
                 text: ''
             },
+            credits: {
+                enabled: false
+            },
             subtitle: {
                 text: ''
             },
@@ -49,6 +52,8 @@
             yAxis: {
                 min: 2,
                 max: 17,
+                opposite: true,
+                tickInterval: 2,
                 title: {
                     text: 'Sugar in mmol'
                 }
@@ -74,17 +79,6 @@
             }]
         });
     });
-
-    /*$(function determineColor(a) {
-        if (a < 3.9) {
-            document.getElementById("point-color").style.backgroundColor = '#ff1500';
-    } else if( a > 3.9 && a < 10){
-            document.getElementById("point-color").style.backgroundColor = '#00ff48';
-    } else {
-            document.getElementById("point-color").style.backgroundColor = '#fffb00';
-        }
-    });*/
-
 </script>
 
 </body>

@@ -55,6 +55,11 @@ public class GraphController {
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime();
 
+    String dayOfMonth = null;
+    if (localDateTime.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
+      dayOfMonth = localDateTime.getDayOfMonth() + " " + localDateTime.getMonth().toString().substring(0, 3);
+    }
+
     int hour = localDateTime.getHour();
     //To avoid time like 2:1 or 14:6 or 2:55
     String hourStr = String.valueOf(hour);
@@ -68,6 +73,11 @@ public class GraphController {
       minuteStr = "0" + minuteStr;
     }
 
-    return hourStr + ":" + minuteStr;
+    String result = hourStr + ":" + minuteStr;
+    if ( dayOfMonth != null){
+      result = dayOfMonth + " " + result;
+
+    }
+    return result;
   }
 }
