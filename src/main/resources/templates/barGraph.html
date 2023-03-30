@@ -1,24 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-
-    <!-- Optional theme -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-
-</head>
+<head th:replace="parts/headPart :: header"></head>
 <body>
-<div class="container">
-    <h2 align="center">SugarMonitor</h2>
+<nav th:replace="parts/navbarPart :: navbar"></nav>
+<div class="container" style="width: 100%; margin: 0 auto">
 
-    <div id="container"
-         style="width: 100%; height: 400px; margin: 0 auto"></div>
+    <div class="row" id="infoPanel" style="width: 100%; height: 250px; display :flex; justify-content:space-between;">
+        <div class="container" style="width: 100%;">
+            <div class="row">
+                <div class="container">
+                    <div class="col-md-3">
+                        <div class="card bg-dark text-white">
+                            <h3 class="card-title text-center">
+                                <div class="d-flex flex-wrap justify-content-center mt-2">
+                                    <a><span class="badge hours"></span></a> :
+                                    <a><span class="badge min"></span></a>
+                                </div>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        Hours:
+                        <a href="/displayBarGraph?displayForLast=2" class="btn btn-primary">2</a>
+                        <a href="/displayBarGraph?displayForLast=3" class="btn btn-primary">3</a>
+                        <a href="/displayBarGraph?displayForLast=6" class="btn btn-primary">6</a>
+                        <a href="/displayBarGraph?displayForLast=12" class="btn btn-primary">12</a>
+                        <a href="/displayBarGraph?displayForLast=24" class="btn btn-primary">24</a>
+                    </div>
+                    <div class="row">
+                        <label th:text="${device1?.getUploader().getBattery()}">DEVICE1 BATTERY LIFE</label>
+                        <label th:text="${device1?.getDevice()}">DEVICE1 NAME</label> <br>
+                        <label th:text="${device2?.getUploader().getBattery()}">DEVICE2 BATTERY LIFE</label>
+                        <label th:text="${device2?.getDevice()}">DEVICE2 NAME</label> <br>
+                        <label th:text="${latestReadingTime != null} ? ${latestReadingTime}">ERROR</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark text-white">
+                    <h3 class="card-title text-center">
+                        <label th:text="${latestReading != null} ? ${latestReading}">0,0</label>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark text-white">
+                    <h3 class="card-title text-center">
+                        <label th:text="${lastReadingValue != null} ? ${lastReadingValue}">0,0</label>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="OnlineSugarChart"
+         style="width: 100%; height: 50%; display :flex; justify-content:space-between; ">
+    </div>
 </div>
-<div>
-    <canvas id="sugarChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,9 +66,10 @@
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
 <script th:inline="javascript">
     $(function () {
-        Highcharts.chart('container', {
+        Highcharts.chart('OnlineSugarChart', {
             chart: {
                 type: 'line'
             },
@@ -55,7 +93,7 @@
                 opposite: true,
                 tickInterval: 2,
                 title: {
-                    text: 'Sugar in mmol'
+                    text: ''
                 }
             },
             tooltip: {
@@ -79,16 +117,33 @@
                 name: '',
                 data: [[${sugarMap.values()}]],
                 zones: [{
-                    value: 3.8,
+                    value: [[${lowSugarLine}]],
                     color: '#f75c5c'
                 }, {
-                    value: 9,
+                    value: [[${highSugarLine}]],
                     color: '#94ec7c'
                 }, {
                     color: '#ede47d'
                 }]
             }]
         });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        setInterval( function() {
+            var hours = new Date().getHours();
+            $(".hours").html(( hours < 10 ? "0" : "" ) + hours);
+        }, 1000);
+        setInterval( function() {
+            var minutes = new Date().getMinutes();
+            $(".min").html(( minutes < 10 ? "0" : "" ) + minutes);
+        },1000);
+        setInterval( function() {
+            var seconds = new Date().getSeconds();
+            $(".sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+        },1000);
     });
 </script>
 
