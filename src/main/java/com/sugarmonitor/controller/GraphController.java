@@ -24,24 +24,15 @@ public class GraphController {
   public String barGraph(
       @RequestParam(required = false, defaultValue = "2") Long displayForLast, Model model) {
     Map<String, Double> map = new LinkedHashMap<>();
-    Set<Integer> hours = new LinkedHashSet<>();
 
     Date from = Date.from(Instant.now().minus(displayForLast, ChronoUnit.HOURS));
     Date to = Date.from(Instant.now());
 
     List<Entry> data = entryRepository.findByDateBetween(from.getTime(), to.getTime());
     data.forEach(
-        entry -> {
-          map.put(convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol());
-        });
-
-    List<Entry> xAxisValues =
-        data.stream()
-            .sorted((Comparator.comparingLong(Entry::getDate)))
-            .collect(Collectors.toList());
+        entry -> map.put(convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol()));
 
     model.addAttribute("sugarMap", map);
-    model.addAttribute("xAxisValues", xAxisValues);
     model.addAttribute("lowSugarLine", 3.9);
     model.addAttribute("highSugarLine", 10);
     return "barGraph";

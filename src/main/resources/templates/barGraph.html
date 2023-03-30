@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-
-    <!-- Optional theme -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-
-</head>
+<head th:replace="parts/headPart :: header"></head>
 <body>
-<div class="container">
-    <h2 align="center">SugarMonitor</h2>
+<nav th:replace="parts/navbarPart :: navbar"></nav>
+<div class="container" style="width: 100%; height: 25%; margin: 0 auto">
 
-    <div id="container"
-         style="width: 100%; height: 400px; margin: 0 auto"></div>
-</div>
-<div>
-    <canvas id="sugarChart"></canvas>
+    <div id="infoPanel" style="width: 100%; height: 25%; margin: 0 auto; display :flex; justify-content:space-between;">
+        <div  style="height: 25%; float:left;
+             background:blue;">Left DIV</div>
+        <div style=" height: 150px; float:right;
+             background:red;">RIGHT DIV</div>
+    </div>
+    <div id="OnlineSugarChart"
+         style="width: 100%; height: 250px; display :flex; justify-content:space-between; ">
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,9 +24,10 @@
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
 <script th:inline="javascript">
     $(function () {
-        Highcharts.chart('container', {
+        Highcharts.chart('OnlineSugarChart', {
             chart: {
                 type: 'line'
             },
@@ -79,10 +75,10 @@
                 name: '',
                 data: [[${sugarMap.values()}]],
                 zones: [{
-                    value: 3.8,
+                    value: [[${lowSugarLine}]],
                     color: '#f75c5c'
                 }, {
-                    value: 9,
+                    value: [[${highSugarLine}]],
                     color: '#94ec7c'
                 }, {
                     color: '#ede47d'
