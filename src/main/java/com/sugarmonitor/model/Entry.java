@@ -44,8 +44,6 @@ public class Entry {
   private long utcOffset;
 
   public LocalDateTime getSysTime() {
-    System.out.println("\nSYS time not formatted: " + sysTime);
-    System.out.println("\nSYS time FORMATTED: " + LocalDateTime.parse(sysTime.replace("Z", "")));
     return LocalDateTime.parse(sysTime.replace("Z", ""));
   }
 

@@ -34,6 +34,11 @@ public class GraphController {
     Date to = Date.from(Instant.now());
 
     List<Entry> data = entryRepository.findByDateBetween(from.getTime(), to.getTime());
+    data.forEach(
+        entry ->
+            System.out.println(
+                "\nconvertEntryDateIntoStringOnGraph: "
+                    + convertEntryDateIntoStringOnGraph(entry)));
     data.forEach(entry -> map.put(convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol()));
 
     model.addAttribute("sugarMap", map);
