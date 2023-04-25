@@ -20,6 +20,7 @@ public class UploadController {
     List<Entry> savedEntries = entryRepository.saveAll(entries);
     System.out.println("\n\n\n\nENTRY list saved:::" + savedEntries);
     savedEntries.forEach(System.out::println);
+    System.out.println();
     return ResponseEntity.ok().build();
   }
 }
