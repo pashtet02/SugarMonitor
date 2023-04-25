@@ -27,6 +27,7 @@ public class GraphController {
   @GetMapping("/displayBarGraph")
   public String barGraph(
       @RequestParam(required = false, defaultValue = "2") Long displayForLast, Model model) {
+
     Map<String, Double> map = new LinkedHashMap<>();
 
     Date from = Date.from(Instant.now().minus(displayForLast, ChronoUnit.HOURS));
