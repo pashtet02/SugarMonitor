@@ -6,7 +6,6 @@ import com.sugarmonitor.repos.DeviceStatusRepository;
 import com.sugarmonitor.repos.EntryRepository;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,11 +33,7 @@ public class GraphController {
     Date to = Date.from(Instant.now());
 
     List<Entry> data = entryRepository.findByDateBetween(from.getTime(), to.getTime());
-    data.forEach(
-        entry ->
-            System.out.println(
-                "\nconvertEntryDateIntoStringOnGraph: "
-                    + convertEntryDateIntoStringOnGraph(entry)));
+
     data.forEach(entry -> map.put(convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol()));
 
     model.addAttribute("sugarMap", map);
@@ -84,22 +79,22 @@ public class GraphController {
   }
 
   public String convertEntryDateIntoStringOnGraph(Entry entry) {
-    LocalDateTime localDateTime =
-        new Date(entry.getDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
     String dayOfMonth = null;
-    if (localDateTime.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
+    if (entry.getSysTime().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
       dayOfMonth =
-          localDateTime.getDayOfMonth() + " " + localDateTime.getMonth().toString().substring(0, 3);
+          entry.getSysTime().getDayOfMonth()
+              + " "
+              + entry.getSysTime().getMonth().toString().substring(0, 3);
     }
 
-    int hour = localDateTime.getHour();
+    int hour = entry.getSysTime().getHour();
     // To avoid time like 2:1 or 14:6 or 2:55
     String hourStr = String.valueOf(hour);
     if (hour < 10) {
       hourStr = "0" + hourStr;
     }
-    int minute = localDateTime.getMinute();
+    int minute = entry.getSysTime().getMinute();
     // To avoid time like 2:1 or 14:6 or 2:55
     String minuteStr = String.valueOf(minute);
     if (minute < 10) {
