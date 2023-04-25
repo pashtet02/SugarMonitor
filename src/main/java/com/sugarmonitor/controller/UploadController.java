@@ -14,10 +14,12 @@ public class UploadController {
   private final EntryRepository entryRepository;
 
   @PostMapping("/upload")
-  public @ResponseBody ResponseEntity<Void> uploadDataFromPhone(@RequestBody Entry entry) {
-    System.out.println("\n\n\n\nENTRY:::" + entry);
-    Entry save = entryRepository.save(entry);
-    System.out.println("\n\n\n\nENTRY after save:::" + save);
+  public @ResponseBody ResponseEntity<Void> uploadDataFromPhone(@RequestBody List<Entry> entries) {
+    System.out.println("\n\n\n\nENTRY list:::" + entries);
+    entries.forEach(System.out::println);
+    List<Entry> savedEntries = entryRepository.saveAll(entries);
+    System.out.println("\n\n\n\nENTRY list saved:::" + savedEntries);
+    savedEntries.forEach(System.out::println);
     return ResponseEntity.ok().build();
   }
 }
