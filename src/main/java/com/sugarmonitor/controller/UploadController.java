@@ -46,7 +46,7 @@ public class UploadController {
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
-    deviceStatus.setCreatedAt(new Date().toString());
+
     System.out.println("\n\n\n\nDEVICE STATUSES list:::" + deviceStatus);
     DeviceStatus savedEntries = deviceStatusRepository.save(deviceStatus);
     System.out.println("\n\n\n\nDEVICE STATUSES saved:::" + savedEntries);
