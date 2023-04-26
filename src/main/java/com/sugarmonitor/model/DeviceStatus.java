@@ -1,5 +1,6 @@
 package com.sugarmonitor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +21,16 @@ public class DeviceStatus {
   private Uploader uploader;
 
   @Field("created_at")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private String createdAt;
 
   private long utcOffset;
 
+  @Field("_class")
+  private String className;
+
   public LocalDateTime getCreatedAt() {
+    // 2023-04-26 22:22:50
     return LocalDateTime.parse(createdAt.replace("Z", ""));
   }
 
@@ -44,6 +50,9 @@ public class DeviceStatus {
         + '\''
         + ", utcOffset="
         + utcOffset
+        + ", className='"
+        + className
+        + '\''
         + '}';
   }
 }
