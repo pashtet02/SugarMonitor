@@ -27,4 +27,23 @@ public class DeviceStatus {
   public LocalDateTime getCreatedAt() {
     return LocalDateTime.parse(createdAt.replace("Z", ""));
   }
+
+  @Override
+  public String toString() {
+    return "DeviceStatus{"
+        + "id='"
+        + id
+        + '\''
+        + ", device='"
+        + device
+        + '\''
+        + ", uploader="
+        + uploader
+        + ", createdAt='"
+        + createdAt
+        + '\''
+        + ", utcOffset="
+        + utcOffset
+        + '}';
+  }
 }

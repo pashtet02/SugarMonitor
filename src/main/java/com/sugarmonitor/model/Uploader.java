@@ -11,4 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Uploader {
   private int battery;
+  private String type;
+
+  @Override
+  public String toString() {
+    return "Uploader{" + "battery=" + battery + ", type='" + type + '\'' + '}';
+  }
 }
