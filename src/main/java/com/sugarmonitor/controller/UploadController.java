@@ -22,7 +22,7 @@ public class UploadController {
   private final DeviceStatusRepository deviceStatusRepository;
 
   @PostMapping("/upload")
-  public @ResponseBody ResponseEntity<Void> uploadEntries(@RequestBody String requestJSON) {
+  public @ResponseBody ResponseEntity<String> uploadEntries(@RequestBody String requestJSON) {
     Collection<Entry> entries = null;
     try {
       entries = new ObjectMapper().readValue(requestJSON, new TypeReference<>() {});
@@ -35,11 +35,11 @@ public class UploadController {
     System.out.println("\n\n\n\nENTRY list saved:::" + savedEntries);
     savedEntries.forEach(System.out::println);
     System.out.println();
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("Uploaded " + entries.size() + " entries");
   }
 
   @PostMapping("/upload/devicestatus")
-  public @ResponseBody ResponseEntity<Void> uploadDeviceData(@RequestBody String requestJSON) {
+  public @ResponseBody ResponseEntity<String> uploadDeviceData(@RequestBody String requestJSON) {
     DeviceStatus deviceStatus = null;
     try {
       deviceStatus = objectMapper.readValue(requestJSON, new TypeReference<>() {});
@@ -52,6 +52,6 @@ public class UploadController {
     System.out.println("\n\n\n\nDEVICE STATUSES saved:::" + savedEntries);
     // savedEntries.forEach(System.out::println);
     System.out.println();
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("Uploaded " + deviceStatus + " entries");
   }
 }

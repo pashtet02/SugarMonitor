@@ -90,8 +90,18 @@ public class Entry {
     try {
       result = LocalDateTime.parse(sysTime.replace("Z", ""));
     } catch (Exception e) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-      result = LocalDateTime.parse(dateString, formatter);
+      try {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        result = LocalDateTime.parse(dateString, formatter);
+      } catch (Exception e2) {
+        try {
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSZ");
+          result = LocalDateTime.parse(dateString, formatter);
+        } catch (Exception e3) {
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+          result = LocalDateTime.parse(dateString, formatter);
+        }
+      }
     }
     return result;
   }
