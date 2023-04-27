@@ -42,32 +42,35 @@ public class GraphController {
 
     // find two last Entry readings and get their diff in value to see trend (like +0.1 mmol,
     // -0.6mmol)
-    Entry secondLastReading =
-        data.stream()
-            .sorted(Comparator.comparing(Entry::getDate))
-            .collect(Collectors.toList())
-            .get(data.size() - 2);
+    if (data.size() >= 2) {
+      Entry secondLastReading =
+          data.stream()
+              .sorted(Comparator.comparing(Entry::getDate))
+              .collect(Collectors.toList())
+              .get(data.size() - 2);
 
-    data.stream()
-        .max(Comparator.comparing(Entry::getDate))
-        .ifPresent(
-            entry -> {
-              model.addAttribute(
-                  "lastReadingValue",
-                  String.format("%,.1f", entry.getSgvInMmol() - secondLastReading.getSgvInMmol()));
+      data.stream()
+          .max(Comparator.comparing(Entry::getDate))
+          .ifPresent(
+              entry -> {
+                model.addAttribute(
+                    "lastReadingValue",
+                    String.format(
+                        "%,.1f", entry.getSgvInMmol() - secondLastReading.getSgvInMmol()));
 
-              Date latestReadingTime = new Date(entry.getDate());
-              model.addAttribute("latestReadingTime", latestReadingTime);
-              model.addAttribute("latestReading", String.format("%,.1f", entry.getSgvInMmol()));
+                Date latestReadingTime = new Date(entry.getDate());
+                model.addAttribute("latestReadingTime", latestReadingTime);
+                model.addAttribute("latestReading", String.format("%,.1f", entry.getSgvInMmol()));
 
-              List<DeviceStatus> deviceStatuses =
-                  deviceStatusRepository.findTop2ByOrderByCreatedAtDesc();
-              if (deviceStatuses.size() == 2
-                  && isInTheSameDay(deviceStatuses.get(0).getCreatedAt(), entry.getSysTime())) {
-                model.addAttribute("device1", deviceStatuses.get(0));
-                model.addAttribute("device2", deviceStatuses.get(1));
-              }
-            });
+                List<DeviceStatus> deviceStatuses =
+                    deviceStatusRepository.findTop2ByOrderByCreatedAtDesc();
+                if (deviceStatuses.size() == 2
+                    && isInTheSameDay(deviceStatuses.get(0).getCreatedAt(), entry.getSysTime())) {
+                  model.addAttribute("device1", deviceStatuses.get(0));
+                  model.addAttribute("device2", deviceStatuses.get(1));
+                }
+              });
+    }
 
     return "barGraph";
   }

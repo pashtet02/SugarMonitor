@@ -28,9 +28,9 @@
                         <a href="/displayBarGraph?displayForLast=24" class="btn btn-primary">24</a>
                     </div>
                     <div class="row">
-                        <label th:text="${device1?.getUploader().getBattery()}">DEVICE1 BATTERY LIFE</label>
+                        <label th:text="${device1?.getUploader()?.getBattery()}">DEVICE1 BATTERY LIFE</label>
                         <label th:text="${device1?.getDevice()}">DEVICE1 NAME</label> <br>
-                        <label th:text="${device2?.getUploader().getBattery()}">DEVICE2 BATTERY LIFE</label>
+                        <label th:text="${device2?.getUploader()?.getBattery()}">DEVICE2 BATTERY LIFE</label>
                         <label th:text="${device2?.getDevice()}">DEVICE2 NAME</label> <br>
                         <label th:text="${latestReadingTime != null} ? ${latestReadingTime}">ERROR</label>
                     </div>

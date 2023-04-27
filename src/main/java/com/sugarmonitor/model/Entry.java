@@ -1,10 +1,11 @@
 package com.sugarmonitor.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString
 public class Entry {
 
   @Id private String id;
@@ -21,6 +21,7 @@ public class Entry {
 
   private long date;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private String dateString;
 
   private long sgv;
@@ -39,12 +40,60 @@ public class Entry {
 
   private int noise;
 
+  @Override
+  public String toString() {
+    return "Entry{"
+        + "id='"
+        + id
+        + '\''
+        + ", device='"
+        + device
+        + '\''
+        + ", date="
+        + date
+        + ", dateString='"
+        + dateString
+        + '\''
+        + ", sgv="
+        + sgv
+        + ", delta="
+        + delta
+        + ", direction='"
+        + direction
+        + '\''
+        + ", type='"
+        + type
+        + '\''
+        + ", filtered="
+        + filtered
+        + ", unfiltered="
+        + unfiltered
+        + ", rssi="
+        + rssi
+        + ", noise="
+        + noise
+        + ", sysTime='"
+        + sysTime
+        + '\''
+        + ", utcOffset="
+        + utcOffset
+        + '}';
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private String sysTime;
 
   private long utcOffset;
 
   public LocalDateTime getSysTime() {
-    return LocalDateTime.parse(sysTime.replace("Z", ""));
+    LocalDateTime result;
+    try {
+      result = LocalDateTime.parse(sysTime.replace("Z", ""));
+    } catch (Exception e) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+      result = LocalDateTime.parse(dateString, formatter);
+    }
+    return result;
   }
 
   public Double getSgvInMmol() {
