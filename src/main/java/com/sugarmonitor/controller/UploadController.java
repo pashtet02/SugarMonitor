@@ -25,7 +25,7 @@ public class UploadController {
   public @ResponseBody ResponseEntity<String> uploadEntries(@RequestBody String requestJSON) {
     Collection<Entry> entries = null;
     try {
-      entries = new ObjectMapper().readValue(requestJSON, new TypeReference<>() {});
+      entries = objectMapper.readValue(requestJSON, new TypeReference<>() {});
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -40,7 +40,7 @@ public class UploadController {
 
   @PostMapping("/upload/devicestatus")
   public @ResponseBody ResponseEntity<String> uploadDeviceData(@RequestBody String requestJSON) {
-    DeviceStatus deviceStatus = null;
+    Collection<DeviceStatus> deviceStatus = null;
     try {
       deviceStatus = objectMapper.readValue(requestJSON, new TypeReference<>() {});
     } catch (JsonProcessingException e) {
@@ -48,7 +48,7 @@ public class UploadController {
     }
 
     System.out.println("\n\n\n\nDEVICE STATUSES list:::" + deviceStatus);
-    DeviceStatus savedEntries = deviceStatusRepository.save(deviceStatus);
+    List<DeviceStatus> savedEntries = deviceStatusRepository.saveAll(deviceStatus);
     System.out.println("\n\n\n\nDEVICE STATUSES saved:::" + savedEntries);
     // savedEntries.forEach(System.out::println);
     System.out.println();
