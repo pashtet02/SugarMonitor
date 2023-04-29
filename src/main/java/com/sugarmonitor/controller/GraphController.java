@@ -69,7 +69,7 @@ public class GraphController {
                     entry.getSgv(activeProfile.getUnits())
                         - secondLastReading.getSgv(activeProfile.getUnits());
                 model.addAttribute(
-                    "lastReadingValue", String.format("%,.1f", differencePrevVsLatest));
+                    "lastReadingValue", (differencePrevVsLatest < 0 ? "-" : "+") + String.format("%,.1f", differencePrevVsLatest));
 
                 Date latestReadingTime = new Date(entry.getDate());
                 model.addAttribute(
