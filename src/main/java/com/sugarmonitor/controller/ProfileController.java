@@ -1,7 +1,7 @@
 package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.Profile;
-import com.sugarmonitor.repos.ProfileRepository;
+import com.sugarmonitor.service.ProfileService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @RequestMapping("/settings")
 public class ProfileController {
-  private final ProfileRepository profileRepository;
+  private final ProfileService profileService;
 
   @GetMapping()
   public String mainReportMenu(Model model) {
 
-    Profile userProfile = profileRepository.findFirstByOrderByCreatedAtDesc().get();
+    Profile userProfile = profileService.getProfile();
 
     model.addAttribute("preferableUnits", userProfile.getUnits());
     model.addAttribute("preferableTimeFormat", userProfile.getTimeFormat());
@@ -58,7 +58,7 @@ public class ProfileController {
             .units(units) // mmol or mgdl replase here with ENUM later
             .build();
 
-    Profile savedProfile = profileRepository.save(profile);
+    profileService.save(profile);
 
     return "redirect:/settings";
   }

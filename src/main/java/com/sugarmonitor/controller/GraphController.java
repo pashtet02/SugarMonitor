@@ -2,6 +2,7 @@ package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.DeviceStatus;
 import com.sugarmonitor.model.Entry;
+import com.sugarmonitor.model.Profile;
 import com.sugarmonitor.repos.DeviceStatusRepository;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
@@ -31,6 +32,8 @@ public class GraphController {
 
     Map<String, Double> map = new LinkedHashMap<>();
 
+    Profile activeProfile = profileService.getProfile();
+
     Date from = Date.from(Instant.now().minus(displayForLast, ChronoUnit.HOURS));
     Date to = Date.from(Instant.now());
 
@@ -38,12 +41,17 @@ public class GraphController {
 
     data.forEach(
         entry ->
-            map.put(graphService.convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol()));
+            map.put(
+                graphService.convertEntryDateIntoStringOnGraph(entry),
+                entry.getSgv(activeProfile.getUnits())));
 
     model.addAttribute("sugarMap", map);
     model.addAttribute("lowSugarLine", profileService.getLowerBoundLimit());
     model.addAttribute("highSugarLine", profileService.getHighBoundLimit());
-
+    model.addAttribute("yAxisGraphMinLimit", profileService.getYAxisGraphMinLimit());
+    model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
+    model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
+    model.addAttribute("profile", activeProfile);
     // find two last Entry readings and get their diff in value to see trend (like +0.1 mmol,
     // -0.6mmol)
     if (data.size() >= 2) {
@@ -58,15 +66,19 @@ public class GraphController {
           .ifPresent(
               entry -> {
                 double differencePrevVsLatest =
-                    entry.getSgvInMmol() - secondLastReading.getSgvInMmol();
+                    entry.getSgv(activeProfile.getUnits())
+                        - secondLastReading.getSgv(activeProfile.getUnits());
                 model.addAttribute(
                     "lastReadingValue", String.format("%,.1f", differencePrevVsLatest));
 
                 Date latestReadingTime = new Date(entry.getDate());
                 model.addAttribute(
-                    "titleText", graphService.createTitle(entry, differencePrevVsLatest));
+                    "titleText",
+                    graphService.createTitle(entry, differencePrevVsLatest, activeProfile));
                 model.addAttribute("latestReadingTime", latestReadingTime);
-                model.addAttribute("latestReading", String.format("%,.1f", entry.getSgvInMmol()));
+                model.addAttribute(
+                    "latestReading",
+                    String.format("%,.1f", entry.getSgv(activeProfile.getUnits())));
 
                 List<DeviceStatus> deviceStatuses =
                     deviceStatusRepository.findTop2ByOrderByCreatedAtDesc();

@@ -88,10 +88,10 @@
                 crosshair: true,
             },
             yAxis: {
-                min: 2,
-                max: 17,
+                min: [[${yAxisGraphMinLimit}]],
+                max: [[${yAxisGraphMaxLimit}]],
                 opposite: true,
-                tickInterval: 2,
+                tickInterval: [[${yAxisGraphStep}]],
                 title: {
                     text: ''
                 }
@@ -99,7 +99,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td id="point-color" style="color:{series.color}; padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mmol</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.1f} [[${profile.getUnits()}]]</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true

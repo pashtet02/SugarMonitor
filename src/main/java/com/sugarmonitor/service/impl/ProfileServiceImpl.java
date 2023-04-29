@@ -5,11 +5,10 @@ import com.sugarmonitor.repos.ProfileRepository;
 import com.sugarmonitor.service.ProfileService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @AllArgsConstructor
 @Slf4j
@@ -49,5 +48,43 @@ public class ProfileServiceImpl implements ProfileService {
   @Override
   public double getHighBoundLimit() {
     return activeProfile.getHighBoundLimit();
+  }
+
+  @Override
+  public Profile getProfile() {
+    return activeProfile;
+  }
+
+  @Override
+  public Profile save(Profile newProfile) {
+    this.activeProfile = profileRepository.save(newProfile);
+    return activeProfile;
+  }
+
+  @Override
+  public int getYAxisGraphMaxLimit() {
+    if (activeProfile.getUnits().equals("mmol")) {
+      return 20;
+    } else {
+      return 20 * 18;
+    }
+  }
+
+  @Override
+  public int getYAxisGraphMinLimit() {
+    if (activeProfile.getUnits().equals("mmol")) {
+      return 2;
+    } else {
+      return 2 * 18;
+    }
+  }
+
+  @Override
+  public int getYAxisGraphStep() {
+    if (activeProfile.getUnits().equals("mmol")) {
+      return 2;
+    } else {
+      return 2 * 18;
+    }
   }
 }

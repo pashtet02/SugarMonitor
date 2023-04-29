@@ -1,6 +1,7 @@
 package com.sugarmonitor.service.impl;
 
 import com.sugarmonitor.model.Entry;
+import com.sugarmonitor.model.Profile;
 import com.sugarmonitor.repos.EntryRepository;
 import com.sugarmonitor.service.GraphService;
 import java.time.LocalDateTime;
@@ -28,44 +29,48 @@ public class GraphServiceImpl implements GraphService {
   }
 
   @Override
-  public String createTitle(Entry entry, double differencePrevVsLatest) {
+  public String createTitle(Entry entry, double differencePrevVsLatest, Profile activeProfile) {
     StringBuilder sb = new StringBuilder();
-    sb.append(String.format("%,.1f", entry.getSgvInMmol()));
+    sb.append(String.format("%,.1f", entry.getSgv(activeProfile.getUnits())));
     sb.append(" ");
-
-    if (differencePrevVsLatest >= 1.0) {
+    double multiplier = activeProfile.getUnits().equals("mmol") ? (double) 1 : (double) 18;
+    if (differencePrevVsLatest >= multiplier) {
       sb.append("+");
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("21C8")); // 2 arrows UP
-    } else if (differencePrevVsLatest < 1.0 && differencePrevVsLatest >= 0.6) {
+    } else if (differencePrevVsLatest >= 0.6 * multiplier) {
       sb.append("+");
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F865")); // arrow UP
-    } else if (differencePrevVsLatest > 0.3) {
+    } else if (differencePrevVsLatest > 0.3 * multiplier) {
       sb.append("+");
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F865")); // arrow UP with 45-degree rotation
-    } else if (differencePrevVsLatest <= 0.3 && differencePrevVsLatest >= 0.0) {
+    } else if (differencePrevVsLatest <= 0.3 * multiplier
+        && differencePrevVsLatest >= 0.0 * multiplier) {
       sb.append("+");
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F862")); // arrow strait
-    } else if (differencePrevVsLatest < 0.0 && differencePrevVsLatest >= -0.3) {
+    } else if (differencePrevVsLatest < 0.0 * multiplier
+        && differencePrevVsLatest >= -0.3 * multiplier) {
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F862")); // arrow strait
-    } else if (differencePrevVsLatest < -0.3 && differencePrevVsLatest >= -0.5) {
+    } else if (differencePrevVsLatest < -0.3 * multiplier
+        && differencePrevVsLatest >= -0.5 * multiplier) {
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F866")); // arrow DOWN with 45-degree rotation
-    } else if (differencePrevVsLatest <= -0.6 && differencePrevVsLatest > -1.0) {
+    } else if (differencePrevVsLatest <= -0.6 * multiplier
+        && differencePrevVsLatest > -1.0 * multiplier) {
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("1F863")); // arrow DOWN
-    } else if (differencePrevVsLatest <= -1.0) { // U+
+    } else if (differencePrevVsLatest <= -1.0 * multiplier) { // U+
       sb.append(String.format("%,.1f", differencePrevVsLatest));
       sb.append(" ");
       sb.append(parseUnicodeChar("21CA")); // 2 arrows DOWN

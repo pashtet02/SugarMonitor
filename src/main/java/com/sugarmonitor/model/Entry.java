@@ -106,7 +106,9 @@ public class Entry {
     return result;
   }
 
-  public Double getSgvInMmol() {
-    return (double) sgv / (double) 18;
+  public Double getSgv(String units) {
+    if (units.equals("mmol")) {
+      return (double) sgv / (double) 18;
+    } else return (double) sgv;
   }
 }
