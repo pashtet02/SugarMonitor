@@ -4,6 +4,7 @@ import com.sugarmonitor.model.DeviceStatus;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.repos.DeviceStatusRepository;
 import com.sugarmonitor.service.GraphService;
+import com.sugarmonitor.service.ProfileService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GraphController {
 
   private final GraphService graphService;
+
+  private final ProfileService profileService;
 
   private final DeviceStatusRepository deviceStatusRepository;
 
@@ -38,8 +41,8 @@ public class GraphController {
             map.put(graphService.convertEntryDateIntoStringOnGraph(entry), entry.getSgvInMmol()));
 
     model.addAttribute("sugarMap", map);
-    model.addAttribute("lowSugarLine", 3.9);
-    model.addAttribute("highSugarLine", 10);
+    model.addAttribute("lowSugarLine", profileService.getLowerBoundLimit());
+    model.addAttribute("highSugarLine", profileService.getHighBoundLimit());
 
     // find two last Entry readings and get their diff in value to see trend (like +0.1 mmol,
     // -0.6mmol)
