@@ -89,7 +89,7 @@ public class ReportController {
     model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
     model.addAttribute("profile", activeProfile);
     model.addAttribute("map", map);
-    return "/report";
+    return "report";
   }
 
   public Map<String, Map<String, Double>> groupEntriesByDay(
