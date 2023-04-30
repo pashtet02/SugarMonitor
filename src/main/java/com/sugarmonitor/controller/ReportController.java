@@ -39,38 +39,43 @@ public class ReportController {
       Model model) {
     Date from;
     Date to;
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.HOUR_OF_DAY, 0);
-    cal.set(Calendar.MINUTE, 0);
-    cal.set(Calendar.SECOND, 0);
+    Calendar fromCal = Calendar.getInstance();
+    fromCal.set(Calendar.HOUR_OF_DAY, 0);
+    fromCal.set(Calendar.MINUTE, 0);
+    fromCal.set(Calendar.SECOND, 0);
+
+    Calendar toCal = Calendar.getInstance();
+    toCal.set(Calendar.HOUR_OF_DAY, 23);
+    toCal.set(Calendar.MINUTE, 59);
+    toCal.set(Calendar.SECOND, 59);
     if (generateFor.equals("today")) {
-      from = cal.getTime();
+      from = fromCal.getTime();
       to = new Date();
     } else if (generateFor.equals("2days")) {
-      cal.add(Calendar.DATE, -1);
-      from = cal.getTime();
+      fromCal.add(Calendar.DATE, -1);
+      from = fromCal.getTime();
       to = new Date();
     } else if (generateFor.equals("week")) {
-      cal.add(Calendar.DATE, -7);
-      from = cal.getTime();
-      to = new Date();
+      fromCal.add(Calendar.DATE, -7);
+      from = fromCal.getTime();
+      to = toCal.getTime();
     } else if (generateFor.equals("month")) {
-      cal.add(Calendar.MONTH, -1);
-      cal.getTime();
-      from = cal.getTime();
-      to = new Date();
+      fromCal.add(Calendar.MONTH, -1);
+      fromCal.getTime();
+      from = fromCal.getTime();
+      to = toCal.getTime();
     } else {
       if (fromDate == null) {
         // set default value as 7 days before current time
-        cal.add(Calendar.DATE, -7);
-        from = cal.getTime();
+        fromCal.add(Calendar.DATE, -7);
+        from = fromCal.getTime();
       } else {
         from = fromDate;
       }
 
       if (toDate == null) {
-        to = cal.getTime();
-      } else to = toDate;
+        to = fromCal.getTime();
+      } else to = toCal.getTime();
     }
 
     Profile activeProfile = profileService.getProfile();

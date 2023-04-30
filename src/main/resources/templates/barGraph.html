@@ -94,7 +94,32 @@
                 tickInterval: [[${yAxisGraphStep}]],
                 title: {
                     text: ''
-                }
+                },
+                plotLines: [{
+                    value: [[${lowSugarLine}]],
+                    color: '#f75c5c',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: '',
+                        align: 'center',
+                        style: {
+                            color: '#f75c5c'
+                        }
+                    }
+                }, {
+                    value: [[${highSugarLine}]],
+                    color: '#ffea00',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: '',
+                        align: 'center',
+                        style: {
+                            color: '#ffea00'
+                        }
+                    }
+                }]
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
