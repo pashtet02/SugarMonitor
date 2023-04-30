@@ -9,13 +9,19 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="day-to-day-tab" data-bs-toggle="tab" data-bs-target="#day-to-day" type="button" role="tab" aria-controls="day-to-day" aria-selected="true">Day to Day</button>
+            <button class="nav-link active" id="day-to-day-tab" data-bs-toggle="tab" data-bs-target="#day-to-day"
+                    type="button" role="tab" aria-controls="day-to-day" aria-selected="true">Day to Day
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="week-to-week-tab" data-bs-toggle="tab" data-bs-target="#week-to-week" type="button" role="tab" aria-controls="week-to-week" aria-selected="false">Week to Week</button>
+            <button class="nav-link" id="week-to-week-tab" data-bs-toggle="tab" data-bs-target="#week-to-week"
+                    type="button" role="tab" aria-controls="week-to-week" aria-selected="false">Week to Week
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="false">General</button>
+            <button class="nav-link" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button"
+                    role="tab" aria-controls="general" aria-selected="false">General
+            </button>
         </li>
     </ul>
 
@@ -24,29 +30,29 @@
         <div class="tab-pane fade show active" id="day-to-day" role="tabpanel" aria-labelledby="day-to-day-tab">
             <div class="card mb-2">
                 <form method="GET" action="/report/daytoday">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for=fromDate class="form-label">From:</label>
-                            <input type="date" class="form-control" id="fromDate" name="fromDate">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for=fromDate class="form-label">From:</label>
+                                <input type="date" class="form-control" id="fromDate" name="fromDate">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="toDate" class="form-label">To:</label>
+                                <input type="date" class="form-control" id="toDate" name="toDate">
+                            </div>
+                            <div class="col-md-4 align-self-end align-items-end justify-content-end">
+                                <a href="/report/daytoday?generateFor=today" class="btn btn-primary mx-1">Today</a>
+                                <a href="/report/daytoday?generateFor=2days" class="btn btn-primary mx-1">For 2 days</a>
+                                <a href="/report/daytoday?generateFor=week" class="btn btn-primary mx-1">For week</a>
+                                <a href="/report/daytoday?generateFor=month" class="btn btn-primary mx-1">For month</a>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="toDate" class="form-label">To:</label>
-                            <input type="date" class="form-control" id="toDate" name="toDate">
-                        </div>
-                        <div class="col-md-3 align-self-end">
-                            <a href="/report/daytoday?generateFor=today" class="btn btn-primary">Today</a>
-                        </div>
-                        <div class="col-md-3 align-self-end">
-                            <a href="/report/daytoday?generateFor=2days" class="btn btn-primary">For 2 days</a>
+                        <div class="row mt-2">
+                            <div class="text-begin">
+                                <button class="btn btn-primary" type="submit" id="show-btn">Show</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row mt-2" >
-                    <div class="text-begin">
-                        <button class="btn btn-primary" type="submit" id="show-btn">Show</button>
-                    </div>
-                    </div>
-                </div>
                 </form>
             </div>
             <div th:each="outerMap : ${map}">
@@ -68,7 +74,7 @@
                         <script src="https://code.highcharts.com/modules/exporting.js"></script>
                         <script>
                             // Iterate through all the sugarMap elements
-                            document.querySelectorAll("#line-chart").forEach(function(element) {
+                            document.querySelectorAll("#line-chart").forEach(function (element) {
                                 // Parse the chart data from the HTML data attributes
                                 var categories = element.getAttribute("data-categories").split(",");
                                 var values = element.getAttribute("data-values").split(",");
@@ -85,14 +91,14 @@
                                     chart: {
                                         type: 'line'
                                     },
-                                    legend:{
-                                        enabled:false
+                                    legend: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: ''
                                     },
                                     credits: {
-                                      enabled: false
+                                        enabled: false
                                     },
                                     subtitle: {
                                         text: ''
@@ -154,7 +160,76 @@
         </div>
 
         <div class="tab-pane fade" id="week-to-week" role="tabpanel" aria-labelledby="week-to-week-tab">
-            <p>Week to Week content goes here</p>
+            <div class="card mb-2">
+                <form method="GET" action="/report/weektoweek">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for=fromDateWeek class="form-label">From:</label>
+                                <input type="date" class="form-control" id="fromDateWeek" name="fromDateWeek">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="toDateWeek" class="form-label">To:</label>
+                                <input type="date" class="form-control" id="toDateWeek" name="toDateWeek">
+                            </div>
+                            <div class="col-md-4 align-items-end justify-content-end">
+                                <a href="/report/weektoweek?generateFor=week" class="btn btn-primary mx-1">This week</a>
+                                <a href="/report/weektoweek?generateFor=2weeks" class="btn btn-primary mx-1">For 2
+                                    weeks</a>
+                                <a href="/report/weektoweek?generateFor=month" class="btn btn-primary mx-1">For
+                                    month</a>
+                                <a href="/report/weektoweek?generateFor=3month" class="btn btn-primary mx-1">For 3
+                                    months</a>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-7 align-self-end align-items-end justify-content-end">
+                                <input class="form-check-input" type="checkbox" name="lowAlertSoundEnabled"
+                                       id="monday" value="monday">
+                                <label class="form-check-label" for="monday">
+                                    Monday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="tuesday"
+                                       id="tuesday" value="tuesday">
+                                <label class="form-check-label" for="tuesday">
+                                    Tuesday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="wednesday"
+                                       id="wednesday" value="wednesday">
+                                <label class="form-check-label" for="wednesday">
+                                    Wednesday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="thursday"
+                                       id="thursday" value="thursday">
+                                <label class="form-check-label" for="thursday">
+                                    Thursday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="friday"
+                                       id="friday" value="friday">
+                                <label class="form-check-label" for="friday">
+                                    Friday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="saturday"
+                                       id="saturday" value="saturday">
+                                <label class="form-check-label" for="saturday">
+                                    Saturday
+                                </label>
+                                <input class="form-check-input" type="checkbox" name="sunday"
+                                       id="sunday" value="sunday">
+                                <label class="form-check-label" for="sunday">
+                                    Sunday
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="text-begin">
+                            <button class="btn btn-primary" type="submit" id="show-btn-week">Show</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         </div>
 
         <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
