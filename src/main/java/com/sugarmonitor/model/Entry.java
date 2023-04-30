@@ -1,5 +1,7 @@
 package com.sugarmonitor.model;
 
+import static java.lang.Math.round;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -108,7 +110,7 @@ public class Entry {
 
   public Double getSgv(String units) {
     if (units.equals("mmol")) {
-      return (double) sgv / (double) 18;
+      return round(((double) sgv / (double) 18) * 10.0) / 10.0;
     } else return (double) sgv;
   }
 }
