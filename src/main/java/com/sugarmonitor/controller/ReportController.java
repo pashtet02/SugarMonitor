@@ -286,22 +286,19 @@ public class ReportController {
         .lowSugarPercentage(lowSugarPercentage)
         .numOfLowEntries(lowSugarEntries.size())
         .averageLow(averageLowSGV)
-        .HbA1cLow(calculateHbA1c(averageLowSGV, userProfile))
         .medianLow(calculateMedianSgv(lowSugarEntries, userProfile))
         .stdDevLow(calculateStandardDeviation(lowSugarEntries, userProfile))
         .highSugarPercentage(highSugarPercentage)
         .numOfHighEntries(highSugarEntries.size())
         .averageHigh(averageHighSGV)
-        .HbA1cHigh(calculateHbA1c(averageHighSGV, userProfile))
         .medianHigh(calculateMedianSgv(highSugarEntries, userProfile))
         .stdDevHigh(calculateStandardDeviation(highSugarEntries, userProfile))
         .inRangeSugarPercentage(100.0 - lowSugarPercentage - highSugarPercentage)
         .averageInRange(averageInRangeSGV)
-        .HbA1cInRange(calculateHbA1c(averageInRangeSGV, userProfile))
         .medianInRange(calculateMedianSgv(inRangeEntries, userProfile))
         .averageTotal(averageTotalSGV)
         .stdDevInRange(calculateStandardDeviation(inRangeEntries, userProfile))
-        .HbA1cTotal(calculateHbA1c(averageTotalSGV, userProfile))
+        .HbA1cTotal(calculateHbA1c(averageTotalSGV))
         .medianInTotal(calculateMedianSgv(entries, userProfile))
         .numOfInRangeEntries(totalEntries - lowSugarEntries.size() - highSugarEntries.size())
         .stdDevTotal(calculateStandardDeviation(entries, userProfile))
@@ -310,10 +307,8 @@ public class ReportController {
   }
 
   // TODO fix formulas are incorrect!
-  public double calculateHbA1c(double averageSgv, Profile userProfile) {
-    if (userProfile.getUnits().equals("mmol")) {
-      return parseDouble(String.format("%.1f", ((10.93 * averageSgv) - 23.5)));
-    } else return parseDouble(String.format("%.1f", ((averageSgv + 46.7) / 28.7)));
+  public double calculateHbA1c(double averageSgv) {
+    return parseDouble(String.format("%.1f", (averageSgv + 1.59) / 1.819));
   }
 
   private double calculateAverageSgv(List<Entry> entries, Profile activeProfile) {

@@ -326,7 +326,7 @@
                                 <td th:text="${report.getAverageLow()}">-</td>
                                 <td th:text="${report.getMedianLow()}">-</td>
                                 <td th:text="${report.getStdDevLow()}">-</td>
-                                <td th:text="${report.getHbA1cLow()}">-</td>
+                                <td ></td>
                             </tr>
                             <tr>
                                 <td th:text="'In Range'"></td>
@@ -335,7 +335,7 @@
                                 <td th:text="${report.getAverageInRange()}">-</td>
                                 <td th:text="${report.getMedianInRange()}">-</td>
                                 <td th:text="${report.getStdDevInRange()}">-</td>
-                                <td th:text="${report.getHbA1cInRange()}">-</td>
+                                <td ></td>
                             </tr>
                             <tr>
                                 <td th:text="'High (>' + ${profile.getHighBoundLimit()} + ')'">-</td>
@@ -344,7 +344,7 @@
                                 <td th:text="${report.getAverageHigh()}">-</td>
                                 <td th:text="${report.getMedianHigh()}">-</td>
                                 <td th:text="${report.getStdDevHigh()}">-</td>
-                                <td th:text="${report.getHbA1cHigh()}">-</td>
+                                <td ></td>
                             </tr>
                             <tr>
                                 <td>Overall</td>
@@ -353,7 +353,7 @@
                                 <td th:text="${report.getAverageTotal()}">-</td>
                                 <td th:text="${report.getMedianInTotal()}">-</td>
                                 <td th:text="${report.getStdDevTotal()}">-</td>
-                                <td th:text="${report.getHbA1cTotal()}">-</td>
+                                <td th:text="${report.getHbA1cTotal()} + '%'">-</td>
                             </tr>
                             </tbody>
                         </table>

@@ -37,8 +37,5 @@ public class Report {
   private double stdDevInRange;
   private double stdDevTotal;
 
-  private double HbA1cLow;
-  private double HbA1cHigh;
-  private double HbA1cInRange;
   private double HbA1cTotal;
 }
