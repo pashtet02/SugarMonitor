@@ -2,7 +2,6 @@ package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
-import com.sugarmonitor.repos.EntryRepository;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
 import java.time.DayOfWeek;
@@ -30,8 +29,13 @@ public class ReportController {
 
   @GetMapping()
   public String returnReportPage(Model model) {
+    model.addAttribute("dayToDayTabActive", true);
+    model.addAttribute("weekToWeekTabActive", false);
+    model.addAttribute("generalTabActive", false);
+
     return "report";
   }
+
   @GetMapping("/daytoday")
   public String generateDayToDayReports(
       @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
@@ -74,8 +78,7 @@ public class ReportController {
       fromCal.getTime();
       from = fromCal.getTime();
       to = toCal.getTime();
-    }
-    else {
+    } else {
       if (fromDate == null) {
         // set default value as 7 days before current time
         fromCal.add(Calendar.DATE, -7);
@@ -99,6 +102,9 @@ public class ReportController {
     model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
     model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
     model.addAttribute("profile", activeProfile);
+    model.addAttribute("dayToDayTabActive", true);
+    model.addAttribute("weekToWeekTabActive", false);
+    model.addAttribute("generalTabActive", false);
     model.addAttribute("map", map);
     return "report";
   }
@@ -144,7 +150,27 @@ public class ReportController {
     model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
     model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
     model.addAttribute("profile", activeProfile);
+    model.addAttribute("dayToDayTabActive", false);
+    model.addAttribute("weekToWeekTabActive", true);
+    model.addAttribute("generalTabActive", false);
     model.addAttribute("weekMap", map);
+
+    return "report";
+  }
+
+  @GetMapping("/general")
+  public String generateGeneralReport(Model model) {
+    Profile activeProfile = profileService.getProfile();
+
+    model.addAttribute("lowSugarLine", profileService.getLowerBoundLimit());
+    model.addAttribute("highSugarLine", profileService.getHighBoundLimit());
+    model.addAttribute("yAxisGraphMinLimit", profileService.getYAxisGraphMinLimit());
+    model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
+    model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
+    model.addAttribute("profile", activeProfile);
+    model.addAttribute("dayToDayTabActive", false);
+    model.addAttribute("weekToWeekTabActive", false);
+    model.addAttribute("generalTabActive", true);
 
     return "report";
   }

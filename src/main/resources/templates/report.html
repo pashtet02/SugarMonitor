@@ -9,25 +9,26 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="day-to-day-tab" data-bs-toggle="tab" data-bs-target="#day-to-day"
-                    type="button" role="tab" aria-controls="day-to-day" aria-selected="true">Day to Day
+            <button th:class="${dayToDayTabActive} ? 'nav-link active' : 'nav-link'" id="day-to-day-tab" data-bs-toggle="tab" data-bs-target="#day-to-day"
+                    type="button" role="tab" aria-controls="day-to-day" th:attr="aria-selected=${dayToDayTabActive} ? 'true' : 'false'">Day to Day
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="week-to-week-tab" data-bs-toggle="tab" data-bs-target="#week-to-week"
-                    type="button" role="tab" aria-controls="week-to-week" aria-selected="false">Week to Week
+            <button th:class="${weekToWeekTabActive} ? 'nav-link active' : 'nav-link'" id="week-to-week-tab" data-bs-toggle="tab" data-bs-target="#week-to-week"
+                    type="button" role="tab" aria-controls="week-to-week" th:attr="aria-selected=${weekToWeekTabActive} ? 'true' : 'false'">Week to Week
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button"
-                    role="tab" aria-controls="general" aria-selected="false">General
+            <button th:class="${generalTabActive} ? 'nav-link active' : 'nav-link'" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button"
+                    role="tab" aria-controls="general" th:attr="aria-selected=${generalTabActive} ? 'true' : 'false'">General
             </button>
         </li>
     </ul>
 
+
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane fade show active" id="day-to-day" role="tabpanel" aria-labelledby="day-to-day-tab">
+        <div th:class="${dayToDayTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="day-to-day" role="tabpanel" aria-labelledby="day-to-day-tab">
             <div class="card mb-2">
                 <form method="GET" action="/report/daytoday">
                     <div class="card-body">
@@ -159,7 +160,7 @@
 
         </div>
 
-        <div class="tab-pane fade" id="week-to-week" role="tabpanel" aria-labelledby="week-to-week-tab">
+        <div th:class="${weekToWeekTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="week-to-week" role="tabpanel" aria-labelledby="week-to-week-tab">
             <div class="card mb-2">
                 <form method="GET" action="/report/weektoweek">
                     <div class="card-body">
@@ -232,7 +233,7 @@
         </div>
         </div>
 
-        <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+        <div th:class="${generalTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="general" role="tabpanel" aria-labelledby="general-tab">
             <p>General content goes here</p>
         </div>
     </div>

@@ -92,9 +92,7 @@ public class GraphServiceImpl implements GraphService {
     LocalDateTime entrySysTime = entry.getSysTime();
     if (entrySysTime.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
       dayOfMonth =
-          entrySysTime.getDayOfMonth()
-              + " "
-              + entrySysTime.getMonth().toString().substring(0, 3);
+          entrySysTime.getDayOfMonth() + " " + entrySysTime.getMonth().toString().substring(0, 3);
     }
 
     int hour = entrySysTime.getHour();
