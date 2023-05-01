@@ -1,15 +1,21 @@
 package com.sugarmonitor.controller;
 
+import static java.lang.Double.parseDouble;
+
+import com.sugarmonitor.dto.Report;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -159,20 +165,201 @@ public class ReportController {
   }
 
   @GetMapping("/general")
-  public String generateGeneralReport(Model model) {
+  public String generateGeneralReport(
+      @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
+      @RequestParam(name = "fromDateGeneral", required = false)
+          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          Date fromDate,
+      @RequestParam(name = "toDateGeneral", required = false)
+          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          Date toDate,
+      Model model) {
+    Date from;
+    Date to;
+    Calendar fromCal = Calendar.getInstance();
+    fromCal.set(Calendar.HOUR_OF_DAY, 0);
+    fromCal.set(Calendar.MINUTE, 0);
+    fromCal.set(Calendar.SECOND, 0);
+
+    Calendar toCal = Calendar.getInstance();
+    toCal.set(Calendar.HOUR_OF_DAY, 23);
+    toCal.set(Calendar.MINUTE, 59);
+    toCal.set(Calendar.SECOND, 59);
+    if (generateFor.equals("today")) {
+      from = fromCal.getTime();
+      to = new Date();
+    } else if (generateFor.equals("2days")) {
+      fromCal.add(Calendar.DATE, -1);
+      from = fromCal.getTime();
+      to = new Date();
+    } else if (generateFor.equals("week")) {
+      fromCal.add(Calendar.DATE, -7);
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else if (generateFor.equals("month")) {
+      fromCal.add(Calendar.MONTH, -1);
+      fromCal.getTime();
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else if (generateFor.equals("3months")) {
+      fromCal.add(Calendar.MONTH, -3);
+      fromCal.getTime();
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else {
+      if (fromDate == null) {
+        // set default value as 7 days before current time
+        fromCal.add(Calendar.DATE, -7);
+        from = fromCal.getTime();
+      } else {
+        from = fromDate;
+      }
+
+      if (toDate == null) {
+        to = toCal.getTime();
+      } else to = toCal.getTime();
+    }
+
     Profile activeProfile = profileService.getProfile();
+    List<Entry> data = graphService.findByDateBetween(from.getTime(), to.getTime());
+
+    String reportName = generateReportName(data);
+    Report report = createReport(data, activeProfile, reportName);
 
     model.addAttribute("lowSugarLine", profileService.getLowerBoundLimit());
     model.addAttribute("highSugarLine", profileService.getHighBoundLimit());
     model.addAttribute("yAxisGraphMinLimit", profileService.getYAxisGraphMinLimit());
     model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
     model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
+
     model.addAttribute("profile", activeProfile);
     model.addAttribute("dayToDayTabActive", false);
     model.addAttribute("weekToWeekTabActive", false);
     model.addAttribute("generalTabActive", true);
 
+    model.addAttribute("report", report);
     return "report";
+  }
+
+  private String generateReportName(List<Entry> entries) {
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd.MM.yyyy");
+    Date fromDate = new Date(entries.get(0).getDate());
+    Date toDate = new Date(entries.get(entries.size() - 1).getDate());
+    String dateRange = sdf.format(fromDate) + " - " + sdf.format(toDate);
+    return "Glucose distribution ("
+        + ChronoUnit.DAYS.between(fromDate.toInstant(), toDate.toInstant())
+        + " days total, "
+        + dateRange
+        + ")";
+  }
+
+  public Report createReport(List<Entry> entries, Profile userProfile, String reportName) {
+    long totalEntries = entries.size();
+    List<Entry> lowSugarEntries =
+        entries.stream()
+            .filter(e -> e.getSgv(userProfile.getUnits()) < userProfile.getLowerBoundLimit())
+            .collect(Collectors.toList());
+    List<Entry> highSugarEntries =
+        entries.stream()
+            .filter(e -> e.getSgv(userProfile.getUnits()) > userProfile.getHighBoundLimit())
+            .collect(Collectors.toList());
+    List<Entry> inRangeEntries =
+        entries.stream()
+            .filter(
+                e ->
+                    (e.getSgv(userProfile.getUnits()) < userProfile.getHighBoundLimit())
+                        && (e.getSgv(userProfile.getUnits()) > userProfile.getLowerBoundLimit()))
+            .collect(Collectors.toList());
+
+    double lowSugarPercentage =
+        parseDouble(
+            String.format("%.1f", ((double) lowSugarEntries.size() / totalEntries) * 100.0));
+    double highSugarPercentage =
+        parseDouble(
+            String.format("%.1f", ((double) highSugarEntries.size() / totalEntries) * 100.0));
+    double averageLowSGV = calculateAverageSgv(lowSugarEntries, userProfile);
+    double averageInRangeSGV = calculateAverageSgv(inRangeEntries, userProfile);
+    double averageHighSGV = calculateAverageSgv(highSugarEntries, userProfile);
+    double averageTotalSGV = calculateAverageSgv(entries, userProfile);
+    return Report.builder()
+        .name(reportName)
+        .lowSugarPercentage(lowSugarPercentage)
+        .numOfLowEntries(lowSugarEntries.size())
+        .averageLow(averageLowSGV)
+        .HbA1cLow(calculateHbA1c(averageLowSGV, userProfile))
+        .medianLow(calculateMedianSgv(lowSugarEntries, userProfile))
+        .stdDevLow(calculateStandardDeviation(lowSugarEntries, userProfile))
+        .highSugarPercentage(highSugarPercentage)
+        .numOfHighEntries(highSugarEntries.size())
+        .averageHigh(averageHighSGV)
+        .HbA1cHigh(calculateHbA1c(averageHighSGV, userProfile))
+        .medianHigh(calculateMedianSgv(highSugarEntries, userProfile))
+        .stdDevHigh(calculateStandardDeviation(highSugarEntries, userProfile))
+        .inRangeSugarPercentage(100.0 - lowSugarPercentage - highSugarPercentage)
+        .averageInRange(averageInRangeSGV)
+        .HbA1cInRange(calculateHbA1c(averageInRangeSGV, userProfile))
+        .medianInRange(calculateMedianSgv(inRangeEntries, userProfile))
+        .averageTotal(averageTotalSGV)
+        .stdDevInRange(calculateStandardDeviation(inRangeEntries, userProfile))
+        .HbA1cTotal(calculateHbA1c(averageTotalSGV, userProfile))
+        .medianInTotal(calculateMedianSgv(entries, userProfile))
+        .numOfInRangeEntries(totalEntries - lowSugarEntries.size() - highSugarEntries.size())
+        .stdDevTotal(calculateStandardDeviation(entries, userProfile))
+        .totalEntries(totalEntries)
+        .build();
+  }
+
+  // TODO fix formulas are incorrect!
+  public double calculateHbA1c(double averageSgv, Profile userProfile) {
+    if (userProfile.getUnits().equals("mmol")) {
+      return parseDouble(String.format("%.1f", ((10.93 * averageSgv) - 23.5)));
+    } else return parseDouble(String.format("%.1f", ((averageSgv + 46.7) / 28.7)));
+  }
+
+  private double calculateAverageSgv(List<Entry> entries, Profile activeProfile) {
+    double result =
+        entries.stream().mapToDouble(e -> e.getSgv(activeProfile.getUnits())).average().orElse(0.0);
+    return parseDouble(String.format("%.1f", result));
+  }
+
+  private double calculateMedianSgv(List<Entry> entries, Profile activeProfile) {
+    double median =
+        entries.stream()
+            .mapToDouble(e -> e.getSgv(activeProfile.getUnits()))
+            .sorted()
+            .toArray()[entries.size() / 2];
+    if (entries.size() % 2 == 0) {
+      median =
+          (median
+                  + entries.stream()
+                      .mapToDouble(e -> e.getSgv(activeProfile.getUnits()))
+                      .sorted()
+                      .toArray()[(entries.size() / 2) - 1])
+              / 2;
+    }
+    return parseDouble(String.format("%.1f", median));
+  }
+
+  public double calculateStandardDeviation(List<Entry> entries, Profile activeProfile) {
+    // Calculate the mean
+    double mean =
+        entries.stream().mapToDouble(e -> e.getSgv(activeProfile.getUnits())).average().orElse(0.0);
+
+    // Calculate the sum of squared differences from the mean
+    double sumOfSquaredDifferences =
+        entries.stream()
+            .mapToDouble(e -> e.getSgv(activeProfile.getUnits()))
+            .map(sgv -> Math.pow(sgv - mean, 2))
+            .sum();
+
+    // Calculate the variance
+    double variance = sumOfSquaredDifferences / entries.size();
+
+    // Calculate the standard deviation
+    double standardDeviation = Math.sqrt(variance);
+
+    // Round the result to one decimal place
+    return parseDouble(String.format("%.1f", standardDeviation));
   }
 
   // Helper method to get the start of the previous Monday

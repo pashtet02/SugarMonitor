@@ -233,12 +233,136 @@
         </div>
         </div>
 
-        <div th:class="${generalTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="general" role="tabpanel" aria-labelledby="general-tab">
-            <p>General content goes here</p>
+    <div th:class="${generalTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="general" role="tabpanel" aria-labelledby="general-tab">
+        <div class="card mb-2">
+            <form method="GET" action="/report/general">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for=fromDateGeneral class="form-label">From:</label>
+                            <input type="date" class="form-control" id="fromDateGeneral" name="fromDateGeneral">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="toDateGeneral" class="form-label">To:</label>
+                            <input type="date" class="form-control" id="toDateGeneral" name="toDateGeneral">
+                        </div>
+                        <div class="col-md-4 align-self-end align-items-end justify-content-end">
+                            <a href="/report/general?generateFor=today" class="btn btn-primary mx-1">Today</a>
+                            <a href="/report/general?generateFor=2days" class="btn btn-primary mx-1">For 2 days</a>
+                            <a href="/report/general?generateFor=week" class="btn btn-primary mx-1">For week</a>
+                            <a href="/report/general?generateFor=month" class="btn btn-primary mx-1">For month</a>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="text-begin">
+                            <button class="btn btn-primary" type="submit" id="show-btn-general">Show</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="pieChart"></div>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script
+                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+                        <!-- Latest compiled and minified JavaScript -->
+                        <script
+                                src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                        <script>
+                            // HighCharts pie chart
+                            Highcharts.chart('pieChart', {
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '[[${report.name}]]'
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                series: [{
+                                    name: 'Percents',
+                                    data: [{
+                                        name: 'Low',
+                                        y: [[${report.lowSugarPercentage}]],
+                                        color: '#FF0000'
+                                    }, {
+                                        name: 'In Range',
+                                        y: [[${report.inRangeSugarPercentage}]],
+                                        color: '#00FF00'
+                                    }, {
+                                        name: 'High',
+                                        y: [[${report.highSugarPercentage}]],
+                                        color: '#FFFF00'
+                                    }]
+                                }]
+                            });
+                        </script>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Range</th>
+                                <th>% of Readings</th>
+                                <th># of Readings</th>
+                                <th>Average</th>
+                                <th>Median</th>
+                                <th>Standard Deviation</th>
+                                <th>A1c estimation*</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="'Low (<' + ${profile.getLowerBoundLimit()} + ')'">-</td>
+                                <td th:text="${report.getLowSugarPercentage()}">-</td>
+                                <td th:text="${report.getNumOfLowEntries()}">-</td>
+                                <td th:text="${report.getAverageLow()}">-</td>
+                                <td th:text="${report.getMedianLow()}">-</td>
+                                <td th:text="${report.getStdDevLow()}">-</td>
+                                <td th:text="${report.getHbA1cLow()}">-</td>
+                            </tr>
+                            <tr>
+                                <td th:text="'In Range'"></td>
+                                <td th:text="${report.getInRangeSugarPercentage()}">-</td>
+                                <td th:text="${report.getNumOfInRangeEntries()}">-</td>
+                                <td th:text="${report.getAverageInRange()}">-</td>
+                                <td th:text="${report.getMedianInRange()}">-</td>
+                                <td th:text="${report.getStdDevInRange()}">-</td>
+                                <td th:text="${report.getHbA1cInRange()}">-</td>
+                            </tr>
+                            <tr>
+                                <td th:text="'High (>' + ${profile.getHighBoundLimit()} + ')'">-</td>
+                                <td th:text="${report.getHighSugarPercentage()}">-</td>
+                                <td th:text="${report.getNumOfHighEntries()}">-</td>
+                                <td th:text="${report.getAverageHigh()}">-</td>
+                                <td th:text="${report.getMedianHigh()}">-</td>
+                                <td th:text="${report.getStdDevHigh()}">-</td>
+                                <td th:text="${report.getHbA1cHigh()}">-</td>
+                            </tr>
+                            <tr>
+                                <td>Overall</td>
+                                <td>100%</td>
+                                <td th:text="${report.getTotalEntries()}">-</td>
+                                <td th:text="${report.getAverageTotal()}">-</td>
+                                <td th:text="${report.getMedianInTotal()}">-</td>
+                                <td th:text="${report.getStdDevTotal()}">-</td>
+                                <td th:text="${report.getHbA1cTotal()}">-</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<!-- jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script
@@ -253,5 +377,6 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 </body>
 </html>
