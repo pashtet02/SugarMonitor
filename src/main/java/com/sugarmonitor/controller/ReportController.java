@@ -2,6 +2,7 @@ package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
+import com.sugarmonitor.repos.EntryRepository;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
 import java.time.DayOfWeek;
@@ -31,7 +32,6 @@ public class ReportController {
   public String returnReportPage(Model model) {
     return "report";
   }
-
   @GetMapping("/daytoday")
   public String generateDayToDayReports(
       @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
@@ -69,7 +69,13 @@ public class ReportController {
       fromCal.getTime();
       from = fromCal.getTime();
       to = toCal.getTime();
-    } else {
+    } else if (generateFor.equals("3months")) {
+      fromCal.add(Calendar.MONTH, -3);
+      fromCal.getTime();
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    }
+    else {
       if (fromDate == null) {
         // set default value as 7 days before current time
         fromCal.add(Calendar.DATE, -7);
@@ -79,7 +85,7 @@ public class ReportController {
       }
 
       if (toDate == null) {
-        to = fromCal.getTime();
+        to = toCal.getTime();
       } else to = toCal.getTime();
     }
 

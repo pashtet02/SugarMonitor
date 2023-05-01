@@ -3,10 +3,12 @@
 <head th:replace="parts/headPart :: header"></head>
 <body>
 <nav th:replace="parts/navbarPart :: navbar"></nav>
-<div class="container" style="width: 100%; margin: 0 auto">
+<div class="container">
 
     <div class="row" id="infoPanel" style="width: 100%; height: 250px; display :flex; justify-content:space-between;">
         <div class="container" style="width: 100%;">
+            <div class="card mb-2">
+                <div class="card-body">
             <div class="row">
                 <div class="container">
                     <div class="col-md-3">
@@ -50,6 +52,7 @@
                     </h3>
                 </div>
             </div>
+                </div>
         </div>
 
         <div class="row" id="OnlineSugarChart"
@@ -57,7 +60,7 @@
     </div>
 </div>
 </div>
-
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -171,6 +174,5 @@
         },1000);
     });
 </script>
-
 </body>
 </html>

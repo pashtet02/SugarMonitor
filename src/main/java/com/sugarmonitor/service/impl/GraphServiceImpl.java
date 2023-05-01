@@ -89,20 +89,21 @@ public class GraphServiceImpl implements GraphService {
   public String convertEntryDateIntoStringOnGraph(Entry entry) {
 
     String dayOfMonth = null;
-    if (entry.getSysTime().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
+    LocalDateTime entrySysTime = entry.getSysTime();
+    if (entrySysTime.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
       dayOfMonth =
-          entry.getSysTime().getDayOfMonth()
+          entrySysTime.getDayOfMonth()
               + " "
-              + entry.getSysTime().getMonth().toString().substring(0, 3);
+              + entrySysTime.getMonth().toString().substring(0, 3);
     }
 
-    int hour = entry.getSysTime().getHour();
+    int hour = entrySysTime.getHour();
     // To avoid time like 2:1 or 14:6 or 2:55
     String hourStr = String.valueOf(hour);
     if (hour < 10) {
       hourStr = "0" + hourStr;
     }
-    int minute = entry.getSysTime().getMinute();
+    int minute = entrySysTime.getMinute();
     // To avoid time like 2:1 or 14:6 or 2:55
     String minuteStr = String.valueOf(minute);
     if (minute < 10) {
