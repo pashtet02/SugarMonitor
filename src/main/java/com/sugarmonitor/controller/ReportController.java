@@ -293,7 +293,8 @@ public class ReportController {
         .averageHigh(averageHighSGV)
         .medianHigh(calculateMedianSgv(highSugarEntries, userProfile))
         .stdDevHigh(calculateStandardDeviation(highSugarEntries, userProfile))
-        .inRangeSugarPercentage(100.0 - lowSugarPercentage - highSugarPercentage)
+        .inRangeSugarPercentage(
+            parseDouble(String.format("%.1f", (100.0 - lowSugarPercentage - highSugarPercentage))))
         .averageInRange(averageInRangeSGV)
         .medianInRange(calculateMedianSgv(inRangeEntries, userProfile))
         .averageTotal(averageTotalSGV)

@@ -173,7 +173,7 @@
                                 <label for="toDateWeek" class="form-label">To:</label>
                                 <input type="date" class="form-control" id="toDateWeek" name="toDateWeek">
                             </div>
-                            <div class="col-md-4 align-items-end justify-content-end">
+                            <div class="col-md-6 align-self-end align-items-end justify-content-end">
                                 <a href="/report/weektoweek?generateFor=week" class="btn btn-primary mx-1">This week</a>
                                 <a href="/report/weektoweek?generateFor=2weeks" class="btn btn-primary mx-1">For 2
                                     weeks</a>
@@ -195,7 +195,7 @@
                                 <label class="form-check-label" for="tuesday">
                                     Tuesday
                                 </label>
-                                <input class="form-check-input" type="checkbox" name="wednesday"
+                                <input class="form-check-input mr-2" type="checkbox" name="wednesday"
                                        id="wednesday" value="wednesday">
                                 <label class="form-check-label" for="wednesday">
                                     Wednesday
@@ -246,11 +246,12 @@
                             <label for="toDateGeneral" class="form-label">To:</label>
                             <input type="date" class="form-control" id="toDateGeneral" name="toDateGeneral">
                         </div>
-                        <div class="col-md-4 align-self-end align-items-end justify-content-end">
+                        <div class="col-md-6 align-self-end align-items-end justify-content-end">
                             <a href="/report/general?generateFor=today" class="btn btn-primary mx-1">Today</a>
                             <a href="/report/general?generateFor=2days" class="btn btn-primary mx-1">For 2 days</a>
                             <a href="/report/general?generateFor=week" class="btn btn-primary mx-1">For week</a>
                             <a href="/report/general?generateFor=month" class="btn btn-primary mx-1">For month</a>
+                            <a href="/report/general?generateFor=3months" class="btn btn-primary mx-1">For 3 months</a>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -261,7 +262,7 @@
                 </div>
             </form>
         </div>
-        <div class="card">
+        <div th:if="${report != null}" class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
