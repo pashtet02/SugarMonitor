@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="headPart :: header"></head>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/displayBarGraph">SugarMonitor</a>
+    <a class="navbar-brand" href="/main">SugarMonitor</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a th:text="#{navbarPart.mainGraph}" class="nav-link" href="/displayBarGraph">Main Graph</a>
+                <a th:text="#{navbarPart.mainGraph}" class="nav-link" href="/main">Main Graph</a>
             </li>
             <li class="nav-item">
                 <a  th:text="#{navbarPart.settings}" class="nav-link" href="/settings">Setings</a>

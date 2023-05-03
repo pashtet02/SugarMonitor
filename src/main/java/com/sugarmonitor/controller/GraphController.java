@@ -26,7 +26,7 @@ public class GraphController {
 
   private final DeviceStatusRepository deviceStatusRepository;
 
-  @GetMapping("/displayBarGraph")
+  @GetMapping("/main")
   public String barGraph(
       @RequestParam(required = false, defaultValue = "2") Long displayForLast, Model model) {
 

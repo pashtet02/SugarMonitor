@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="parts/headPart :: header"></head>
+<body>
+<nav th:replace="parts/navbarPart :: navbar"></nav>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">Error</h5>
+                    <p class="card-text" th:text="${error}">An unexpected error occurred.</p>
+                    <a href="/main" class="btn btn-primary">Go back to main graph</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
