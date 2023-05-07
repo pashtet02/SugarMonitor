@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,10 @@ public class User implements Serializable, UserDetails {
   @Override
   public boolean isEnabled() {
     return enabled;
+  }
+
+  public String getRolesAsString() {
+    return roles.stream().map(Role::getAuthority).collect(Collectors.joining(", "));
   }
 
   public boolean isAdmin() {

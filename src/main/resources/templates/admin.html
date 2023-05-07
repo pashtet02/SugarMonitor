@@ -49,7 +49,7 @@
                     <tbody>
                     <tr th:each="userAccount : ${allUsers}">
                         <td th:text="${userAccount.username}"></td>
-                        <td th:text="${userAccount.getRoles()}"></td>
+                        <td th:text="${userAccount.getRolesAsString()}"></td>
                         <td th:if="${userAccount.isEnabled()}"><a class="btn btn-danger" th:href="@{/admin/disable/{username}(username=${userAccount.username})}">Disable</a></td>
                         <td th:if="${!userAccount.isEnabled()}"><a class="btn btn-success" th:href="@{/admin/enable/{username}(username=${userAccount.username})}">Enable</a></td>
                     </tr>
