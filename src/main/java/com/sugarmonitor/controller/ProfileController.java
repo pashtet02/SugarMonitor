@@ -1,10 +1,13 @@
 package com.sugarmonitor.controller;
 
 import com.sugarmonitor.model.Profile;
+import com.sugarmonitor.model.User;
 import com.sugarmonitor.service.ProfileService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,8 @@ public class ProfileController {
   private final ProfileService profileService;
 
   @GetMapping()
-  public String mainReportMenu(Model model) {
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public String mainReportMenu(@AuthenticationPrincipal User user, Model model) {
 
     Profile userProfile = profileService.getProfile();
 
@@ -29,13 +33,15 @@ public class ProfileController {
     model.addAttribute("enableLowAlertSound", userProfile.isLowAlertSoundEnabled());
     model.addAttribute("highBoundNum", userProfile.getHighBoundLimit());
     model.addAttribute("lowerBoundNum", userProfile.getLowerBoundLimit());
+    model.addAttribute("user", user);
 
     return "profile";
   }
 
   @PostMapping("/update")
-  // LocalDateTime.parse("2023-04-29T20:14:03.523Z".replace("Z", "")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public String updateProfile(
+      @AuthenticationPrincipal User user,
       @RequestParam(name = "units", required = false) String units,
       @RequestParam(name = "hours", required = false) int hoursFormat,
       @RequestParam(name = "highBoundNum", required = false) double highBoundNum,

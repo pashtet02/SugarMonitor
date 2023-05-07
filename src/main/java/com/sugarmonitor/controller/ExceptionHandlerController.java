@@ -17,7 +17,7 @@ public class ExceptionHandlerController {
   public String handleException(Exception ex, Model model) {
     log.error("handleException: message {}", ex.getMessage());
     model.addAttribute("error", ex.getMessage());
-    return "400";
+    return "error";
   }
 
   @ExceptionHandler({AuthenticationException.class})
@@ -25,6 +25,6 @@ public class ExceptionHandlerController {
   public String handleAuthenticationException(Exception ex, Model model) {
     log.error("handleException: message {}", ex.getMessage());
     model.addAttribute("error", "You are not allowed to view this page!");
-    return "400";
+    return "error";
   }
 }

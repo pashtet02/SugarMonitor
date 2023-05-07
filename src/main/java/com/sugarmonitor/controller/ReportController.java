@@ -5,6 +5,7 @@ import static java.lang.Double.parseDouble;
 import com.sugarmonitor.dto.Report;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
+import com.sugarmonitor.model.User;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +36,18 @@ public class ReportController {
   private final ProfileService profileService;
 
   @GetMapping()
-  public String returnReportPage(Model model) {
+  public String returnReportPage(@AuthenticationPrincipal User user, Model model) {
     model.addAttribute("dayToDayTabActive", true);
     model.addAttribute("weekToWeekTabActive", false);
     model.addAttribute("generalTabActive", false);
+    model.addAttribute("user", user);
 
     return "report";
   }
 
   @GetMapping("/daytoday")
   public String generateDayToDayReports(
+      @AuthenticationPrincipal User user,
       @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
       @RequestParam(name = "fromDate", required = false)
           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -112,11 +116,13 @@ public class ReportController {
     model.addAttribute("weekToWeekTabActive", false);
     model.addAttribute("generalTabActive", false);
     model.addAttribute("map", map);
+    model.addAttribute("user", user);
     return "report";
   }
 
   @GetMapping("/weektoweek")
   public String generateWeekToWeekReports(
+      @AuthenticationPrincipal User user,
       @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
       @RequestParam(name = "fromDateWeek", required = false)
           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -160,12 +166,13 @@ public class ReportController {
     model.addAttribute("weekToWeekTabActive", true);
     model.addAttribute("generalTabActive", false);
     model.addAttribute("weekMap", map);
-
+    model.addAttribute("user", user);
     return "report";
   }
 
   @GetMapping("/general")
   public String generateGeneralReport(
+      @AuthenticationPrincipal User user,
       @RequestParam(name = "generateFor", required = false, defaultValue = "") String generateFor,
       @RequestParam(name = "fromDateGeneral", required = false)
           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -236,7 +243,7 @@ public class ReportController {
     model.addAttribute("dayToDayTabActive", false);
     model.addAttribute("weekToWeekTabActive", false);
     model.addAttribute("generalTabActive", true);
-
+    model.addAttribute("user", user);
     model.addAttribute("report", report);
     return "report";
   }

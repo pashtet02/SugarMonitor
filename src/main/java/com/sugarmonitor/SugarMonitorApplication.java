@@ -5,18 +5,19 @@ import com.sugarmonitor.model.User;
 import com.sugarmonitor.repos.UserRepository;
 import java.util.Arrays;
 import java.util.HashSet;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class SugarMonitorApplication implements CommandLineRunner {
 
-  @Autowired private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  @Autowired private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
   public static void main(String[] args) {
     SpringApplication.run(SugarMonitorApplication.class, args);
@@ -24,6 +25,7 @@ public class SugarMonitorApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    // Create 2 default users if none created by default
     if (userRepository.findByUsername("admin") == null) {
       // Create user with username "admin", password "admin", and roles "USER" and "ADMIN"
       User admin = new User();

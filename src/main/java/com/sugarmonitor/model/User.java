@@ -53,4 +53,18 @@ public class User implements Serializable, UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
+  public boolean isAdmin() {
+    if (roles != null) {
+      return roles.contains(Role.ADMIN);
+    }
+    return false;
+  }
+
+  public boolean isUser() {
+    if (roles != null) {
+      return roles.contains(Role.USER);
+    }
+    return false;
+  }
 }

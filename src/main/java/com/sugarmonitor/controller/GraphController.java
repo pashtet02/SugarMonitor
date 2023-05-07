@@ -3,6 +3,7 @@ package com.sugarmonitor.controller;
 import com.sugarmonitor.model.DeviceStatus;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
+import com.sugarmonitor.model.User;
 import com.sugarmonitor.repos.DeviceStatusRepository;
 import com.sugarmonitor.service.GraphService;
 import com.sugarmonitor.service.ProfileService;
@@ -11,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,9 @@ public class GraphController {
 
   @GetMapping("/main")
   public String barGraph(
-      @RequestParam(required = false, defaultValue = "2") Long displayForLast, Model model) {
+      @AuthenticationPrincipal User user,
+      @RequestParam(required = false, defaultValue = "2") Long displayForLast,
+      Model model) {
 
     Map<String, Double> map = new LinkedHashMap<>();
 
@@ -52,6 +56,8 @@ public class GraphController {
     model.addAttribute("yAxisGraphMaxLimit", profileService.getYAxisGraphMaxLimit());
     model.addAttribute("yAxisGraphStep", profileService.getYAxisGraphStep());
     model.addAttribute("profile", activeProfile);
+    model.addAttribute("user", user);
+
     // find two last Entry readings and get their diff in value to see trend (like +0.1 mmol,
     // -0.6mmol)
     if (data.size() >= 2) {

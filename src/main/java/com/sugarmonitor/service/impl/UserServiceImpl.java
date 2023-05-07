@@ -4,6 +4,7 @@ import com.sugarmonitor.model.Role;
 import com.sugarmonitor.model.User;
 import com.sugarmonitor.repos.UserRepository;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,10 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     return userRepository.findByUsername(username);
+  }
+
+  public List<User> findAll() {
+    return userRepository.findAll();
   }
 
   public boolean addUser(User user, Role role) {
