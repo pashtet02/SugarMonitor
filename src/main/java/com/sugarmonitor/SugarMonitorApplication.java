@@ -32,14 +32,16 @@ public class SugarMonitorApplication implements CommandLineRunner {
       admin.setUsername("admin");
       admin.setPassword(passwordEncoder.encode("admin"));
       admin.setRoles(new HashSet<>(Arrays.asList(Role.USER, Role.ADMIN)));
+      admin.setEnabled(true);
       userRepository.save(admin);
     }
     if (userRepository.findByUsername("pashtet") == null) {
-      User admin = new User();
-      admin.setUsername("pashtet");
-      admin.setPassword(passwordEncoder.encode("pashtet"));
-      admin.setRoles(new HashSet<>(Arrays.asList(Role.USER)));
-      userRepository.save(admin);
+      User pashtet = new User();
+      pashtet.setUsername("pashtet");
+      pashtet.setPassword(passwordEncoder.encode("pashtet"));
+      pashtet.setRoles(new HashSet<>(Arrays.asList(Role.USER)));
+      pashtet.setEnabled(true);
+      userRepository.save(pashtet);
     }
   }
 }

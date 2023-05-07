@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,11 +32,13 @@ public class User implements Serializable, UserDetails {
   @Size(min = 4, max = 32, message = "Password must be in range 4 and 32 characters")
   private String password;
 
-  private String confirmPassword;
+  @Transient private String confirmPassword;
 
   @Field("roles")
   @JsonProperty("roles")
   private Set<Role> roles;
+
+  private boolean enabled;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,7 +62,7 @@ public class User implements Serializable, UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return enabled;
   }
 
   public boolean isAdmin() {
