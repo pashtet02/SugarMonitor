@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,15 @@ public class User implements Serializable, UserDetails {
 
   @Id private String id;
 
+  @NotBlank(message = "Username must be provided")
+  @Size(min = 4, max = 16, message = "Username must be in range 4 and 16 characters")
   private String username;
 
+  @NotBlank(message = "Password must be provided")
+  @Size(min = 4, max = 32, message = "Password must be in range 4 and 32 characters")
   private String password;
+
+  private String confirmPassword;
 
   @Field("roles")
   @JsonProperty("roles")

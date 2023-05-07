@@ -3,8 +3,53 @@
 <head th:replace="parts/headPart :: header"></head>
 <body>
 <nav th:replace="parts/navbarPart :: navbar"></nav>
-<div class="container">
-    <p>Hi there you are admin, well done</p>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <form action="/admin/add" method="post" th:object="${userToBeCreated}">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Enter username" />
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input th:field="*{password}" type="password" class="form-control" id="password" name="password">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Confirm Password</label>
+                    <input th:field="*{confirmPassword}" type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                    <div th:if="${confirmPasswordError != null}">
+                        <div class="text-danger" th:text="${confirmPasswordError}">
+
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary float-left">Create user</button>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive mt-4">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody th:if="${users != null}">
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm" th:onclick="'deactivate(\'' + ${user.id} + '\')'">Deactivate</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
