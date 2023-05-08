@@ -18,6 +18,9 @@
             <li class="nav-item">
                 <a th:text="#{navbarPart.reports}" class="nav-link" href="/report">Reports</a>
             </li>
+            <li class="nav-item">
+                <a th:text="#{navbarPart.notes}" class="nav-link" href="/notes">Notes</a>
+            </li>
             <li class="nav-item" th:if="${user != null && user.isAdmin()}">
                 <a th:text="#{navbarPart.adminpanel}" class="nav-link" href="/admin">Admin</a>
             </li>
