@@ -280,10 +280,12 @@ public class ReportController {
 
     double lowSugarPercentage =
         parseDouble(
-            String.format("%.1f", ((double) lowSugarEntries.size() / totalEntries) * 100.0));
+            String.format("%.1f", ((double) lowSugarEntries.size() / totalEntries) * 100.0)
+                .replace(",", "."));
     double highSugarPercentage =
         parseDouble(
-            String.format("%.1f", ((double) highSugarEntries.size() / totalEntries) * 100.0));
+            String.format("%.1f", ((double) highSugarEntries.size() / totalEntries) * 100.0)
+                .replace(",", "."));
     double averageLowSGV = calculateAverageSgv(lowSugarEntries, userProfile);
     double averageInRangeSGV = calculateAverageSgv(inRangeEntries, userProfile);
     double averageHighSGV = calculateAverageSgv(highSugarEntries, userProfile);
@@ -301,7 +303,9 @@ public class ReportController {
         .medianHigh(calculateMedianSgv(highSugarEntries, userProfile))
         .stdDevHigh(calculateStandardDeviation(highSugarEntries, userProfile))
         .inRangeSugarPercentage(
-            parseDouble(String.format("%.1f", (100.0 - lowSugarPercentage - highSugarPercentage))))
+            parseDouble(
+                String.format("%.1f", (100.0 - lowSugarPercentage - highSugarPercentage))
+                    .replace(",", ".")))
         .averageInRange(averageInRangeSGV)
         .medianInRange(calculateMedianSgv(inRangeEntries, userProfile))
         .averageTotal(averageTotalSGV)
@@ -316,13 +320,13 @@ public class ReportController {
 
   // TODO fix formulas are incorrect!
   public double calculateHbA1c(double averageSgv) {
-    return parseDouble(String.format("%.1f", (averageSgv + 1.59) / 1.819));
+    return parseDouble(String.format("%.1f", (averageSgv + 1.59) / 1.819).replace(",", "."));
   }
 
   private double calculateAverageSgv(List<Entry> entries, Profile activeProfile) {
     double result =
         entries.stream().mapToDouble(e -> e.getSgv(activeProfile.getUnits())).average().orElse(0.0);
-    return parseDouble(String.format("%.1f", result));
+    return parseDouble(String.format("%.1f", result).replace(",", "."));
   }
 
   private double calculateMedianSgv(List<Entry> entries, Profile activeProfile) {
@@ -340,7 +344,7 @@ public class ReportController {
                       .toArray()[(entries.size() / 2) - 1])
               / 2;
     }
-    return parseDouble(String.format("%.1f", median));
+    return parseDouble(String.format("%.1f", median).replace(",", "."));
   }
 
   public double calculateStandardDeviation(List<Entry> entries, Profile activeProfile) {
@@ -362,7 +366,7 @@ public class ReportController {
     double standardDeviation = Math.sqrt(variance);
 
     // Round the result to one decimal place
-    return parseDouble(String.format("%.1f", standardDeviation));
+    return parseDouble(String.format("%.1f", standardDeviation).replace(",", "."));
   }
 
   // Helper method to get the start of the previous Monday
