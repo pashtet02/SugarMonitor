@@ -35,6 +35,15 @@ public class NoteService {
     noteRepository.save(noteToBeCreated);
   }
 
+  public void sortNotesByUpdatedAt(List<Note> notes) {
+    notes.sort(
+        (note1, note2) -> {
+          Date updatedAt1 = note1.getUpdatedAt();
+          Date updatedAt2 = note2.getUpdatedAt();
+          return updatedAt2.compareTo(updatedAt1);
+        });
+  }
+
   public List<Note> findAllByCreatedAtBetween(LocalDateTime fromDate, LocalDateTime toDate) {
     return noteRepository.findAllByUpdatedAtBetween(fromDate, toDate);
   }

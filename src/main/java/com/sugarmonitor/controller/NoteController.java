@@ -4,6 +4,7 @@ import com.sugarmonitor.model.Note;
 import com.sugarmonitor.model.User;
 import com.sugarmonitor.service.NoteService;
 import com.sugarmonitor.service.ProfileService;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -44,7 +45,13 @@ public class NoteController {
       LocalDateTime fromDate =
           fromDateParam.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
       LocalDateTime toDate =
-          toDateParam.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+          toDateParam
+              .toInstant()
+              .atZone(ZoneId.systemDefault())
+              .toLocalDateTime()
+              .withHour(23)
+              .withMinute(59)
+              .withSecond(59);
       requestedNotes = noteService.findAllByCreatedAtBetween(fromDate, toDate);
     } else if (fromDateParam != null) {
       LocalDateTime fromDate =
@@ -69,6 +76,11 @@ public class NoteController {
               noteService.findAllByCreatedAtBetween(startOfDay.minusMonths(1), LocalDateTime.now());
           break;
       }
+    }
+    if (requestedNotes != null) {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+      requestedNotes.forEach(note -> note.setDateString(formatter.format(note.getUpdatedAt())));
+      noteService.sortNotesByUpdatedAt(requestedNotes);
     }
 
     model.addAttribute("notes", requestedNotes);

@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -25,6 +26,9 @@ public class Note {
 
   @Field("updated_at")
   private Date updatedAt;
+
+  // This field is needed to display fancy dt tm on UI like "05.05.2023 19:28"
+  @Transient private String dateString;
 
   @ValueOfEnum(
       enumClass = MealType.class,

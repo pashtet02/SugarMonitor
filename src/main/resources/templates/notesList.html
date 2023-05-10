@@ -134,7 +134,7 @@
     <!-- Iterate through the list of notes and create a card for each one -->
     <div th:each="note : ${notes}" class="card my-4">
         <div class="card-body">
-            <h5 class="card-title" th:text="${note.mealType}"></h5>
+            <h5 class="card-title" th:text="${note.mealType + ' ' +note.dateString}"></h5>
             <p class="card-text">
                 <strong>Note:</strong> <span th:text="${note.noteText}"></span><br>
                 <strong>Medications:</strong> <span th:text="${note.medications}"></span><br>
