@@ -2,6 +2,7 @@ package com.sugarmonitor.service;
 
 import com.sugarmonitor.model.Note;
 import com.sugarmonitor.repos.NoteRepository;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -30,10 +31,11 @@ public class NoteService {
   }
 
   public void upsertNote(Note noteToBeCreated) {
-    if (noteToBeCreated.getId() == null) {
-      noteToBeCreated.setCreatedAt(new Date());
-    }
     noteToBeCreated.setUpdatedAt(new Date());
     noteRepository.save(noteToBeCreated);
+  }
+
+  public List<Note> findAllByCreatedAtBetween(LocalDateTime fromDate, LocalDateTime toDate) {
+    return noteRepository.findAllByUpdatedAtBetween(fromDate, toDate);
   }
 }

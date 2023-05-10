@@ -12,7 +12,36 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <h4>Diabetic Diary Notes</h4>
-        <button class="btn btn-primary mb-2 float-right" aria-expanded="false" type="button" data-toggle="collapse" data-target="#create-note-card"  aria-controls="create-note-card">
+
+    <div class="card mb-2">
+        <form method="GET" action="/notes">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for=fromDate class="form-label">From:</label>
+                        <input type="date" class="form-control" id="fromDate" name="fromDate">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="toDate" class="form-label">To:</label>
+                        <input type="date" class="form-control" id="toDate" name="toDate">
+                    </div>
+                    <div class="col-md-4 align-self-end align-items-end justify-content-end">
+                        <a href="/notes?findFor=today" class="btn btn-primary mx-1">Today</a>
+                        <a href="/notes/findFor=2days" class="btn btn-primary mx-1">For 2 days</a>
+                        <a href="/notes/findFor=week" class="btn btn-primary mx-1">For week</a>
+                        <a href="/notes/findFor=month" class="btn btn-primary mx-1">For month</a>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="text-begin">
+                        <button class="btn btn-primary" type="submit" id="show-btn">Show</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+        <button th:if="${user != null && user.isAdmin()}" class="btn btn-primary mb-2 float-right" aria-expanded="false" type="button" data-toggle="collapse" data-target="#create-note-card"  aria-controls="create-note-card">
             Show creation form
         </button>
     <div class="card">
@@ -21,6 +50,7 @@
             <div class="card-body">
                 <form id="create-note-form" method="POST" action="/notes/add" th:object="${noteToBeCreated}">
                     <h5>Create new note</h5>
+                    <input type="hidden" th:field="*{id}" id="note-id">
                     <div class="form-group">
                         <label for="note-text">Note Text</label>
                         <textarea th:field="*{noteText}" class="form-control" id="note-text" name="noteText" rows="3" ></textarea>
@@ -94,8 +124,8 @@
                 <strong>Carbs:</strong> <span th:text="${note.carbs}"></span><br>
                 <strong>Calories:</strong> <span th:text="${note.calories}"></span><br>
                 <strong>Blood Glucose Level:</strong> <span th:text="${note.bloodGlucoseLevel}"></span><br>
-                <a class="btn btn-primary mt-2" th:href="@{/notes/update/{id}(id=${note.id})}">Edit</a>
-                <a class="btn btn-danger mt-2" th:href="@{/notes/delete/{id}(id=${note.id})}">Delete</a>
+                <a th:if="${user != null && user.isAdmin()}" class="btn btn-primary mt-2" th:href="@{/notes/update/{id}(id=${note.id})}">Edit</a>
+                <a th:if="${user != null && user.isAdmin()}" class="btn btn-danger mt-2" th:href="@{/notes/delete/{id}(id=${note.id})}">Delete</a>
             </p>
         </div>
     </div>

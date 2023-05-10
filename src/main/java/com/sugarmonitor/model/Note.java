@@ -23,16 +23,13 @@ public class Note {
 
   @Id private String id;
 
-  @Field("created_at")
-  private Date createdAt;
-
   @Field("updated_at")
   private Date updatedAt;
 
   @ValueOfEnum(
       enumClass = MealType.class,
       message = "Must be one of (BREAKFAST, DINNER, SUPPER, OTHER) values")
-  private String mealType;
+  public String mealType;
 
   @Size(
       min = 10,
