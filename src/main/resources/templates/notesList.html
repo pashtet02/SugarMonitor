@@ -27,9 +27,9 @@
                     </div>
                     <div class="col-md-4 align-self-end align-items-end justify-content-end">
                         <a href="/notes?findFor=today" class="btn btn-primary mx-1">Today</a>
-                        <a href="/notes/findFor=2days" class="btn btn-primary mx-1">For 2 days</a>
-                        <a href="/notes/findFor=week" class="btn btn-primary mx-1">For week</a>
-                        <a href="/notes/findFor=month" class="btn btn-primary mx-1">For month</a>
+                        <a href="/notes?findFor=2days" class="btn btn-primary mx-1">For 2 days</a>
+                        <a href="/notes?findFor=week" class="btn btn-primary mx-1">For week</a>
+                        <a href="/notes?findFor=month" class="btn btn-primary mx-1">For month</a>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -70,6 +70,30 @@
                             <option value="SUPPER">SUPPER</option>
                         </select>
                         <div th:if="${#fields.hasErrors('mealType')}" th:errors="*{mealType}" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mealType">Stress Level</label>
+                        <select th:field="*{stressLevel}" class="form-control" id="stressLevel" name="stressLevel">
+                            <option value="0" selected>No Stress: You feel calm and relaxed, without any worries or concerns.</option >
+                            <option value="1">Low Stress: You are feeling slightly stressed or anxious, but it is manageable and not causing significant discomfort.</option>
+                            <option value="2">Mild Stress: You are experiencing some stress or pressure, but you are still able to function and complete tasks.</option>
+                            <option value="3">Moderate Stress: You are feeling stressed and overwhelmed, and it is affecting your ability to concentrate or perform tasks effectively.</option>
+                            <option value="4">High Stress: You are experiencing significant stress and anxiety, and it is causing physical or emotional symptoms such as sweating, racing thoughts, or difficulty breathing.</option>
+                            <option value="5">Extreme Stress: You are in a state of crisis and feeling completely overwhelmed, with severe physical and emotional symptoms such as panic attacks, chest pain, or shaking.</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('stressLevel')}" th:errors="*{stressLevel}" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mealType">Exercise Level</label>
+                        <select th:field="*{exerciseLevel}" class="form-control" id="exerciseLevel" name="exerciseLevel">
+                            <option value="0" selected>No Exercise: You are not performing any physical activity or exercise.</option>
+                            <option value="1">Low Exercise: You are engaging in light physical activity such as walking or stretching, for short durations.</option>
+                            <option value="2">Mild Exercise: You are performing moderate physical activity such as cycling or dancing, for longer durations.</option>
+                            <option value="3">Moderate Exercise: You are engaging in vigorous physical activity such as running or swimming, for short durations.</option>
+                            <option value="4">High Exercise: You are performing intense physical activity such as weightlifting or interval training, for longer durations.</option>
+                            <option value="5">Extreme Exercise: You are engaging in extremely intense physical activity such as competitive sports or marathon running, for extended periods of time.</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('exerciseLevel')}" th:errors="*{exerciseLevel}" class="text-danger"></div>
                     </div>
                     <div class="form-group">
                         <label for="weight">Weight</label>
@@ -115,9 +139,9 @@
                 <strong>Note:</strong> <span th:text="${note.noteText}"></span><br>
                 <strong>Medications:</strong> <span th:text="${note.medications}"></span><br>
                 <strong>Exercise Level:</strong>
-                <span th:each="star : ${#numbers.sequence(1,5)}" th:classappend="${note.exerciseLevel >= star} ? 'text-warning' : 'text-secondary'">&#9733;</span><br>
-                <strong>Stress Level:</strong>
-                <span th:each="star : ${#numbers.sequence(1,5)}" th:classappend="${note.stressLevel >= star} ? 'text-warning' : 'text-secondary'">&#9733;</span><br>
+                <span th:each="arm : ${#numbers.sequence(1,note.exerciseLevel)}" th:classappend="${note.exerciseLevel >= arm} ? 'text-warning' : 'text-secondary'">&#x1F4AA;</span><br>
+                <strong>Stress Level:  </strong>
+                <span th:each="stressEmoJi : ${#numbers.sequence(1,note.stressLevel)}" th:classappend="${note.stressLevel >= stressEmoJi} ? 'text-warning' : 'text-secondary'">&#x1F630;</span><br>
                 <strong>Weight:</strong> <span th:text="${note.weight}"></span><br>
                 <strong>Insulin (Short Action):</strong> <span th:text="${note.insulinShortAction}"></span><br>
                 <strong>Insulin (Long Action):</strong> <span th:text="${note.insulinLongAction}"></span><br>

@@ -50,24 +50,25 @@ public class NoteController {
       LocalDateTime fromDate =
           fromDateParam.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
       requestedNotes = noteService.findAllByCreatedAtBetween(fromDate, LocalDateTime.now());
-    }
-    LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-    switch (findFor) {
-      case "today":
-        requestedNotes = noteService.findAllByCreatedAtBetween(startOfDay, LocalDateTime.now());
-        break;
-      case "2days":
-        requestedNotes =
-            noteService.findAllByCreatedAtBetween(startOfDay.minusHours(48), LocalDateTime.now());
-        break;
-      case "week":
-        requestedNotes =
-            noteService.findAllByCreatedAtBetween(startOfDay.minusWeeks(1), LocalDateTime.now());
-        break;
-      case "month":
-        requestedNotes =
-            noteService.findAllByCreatedAtBetween(startOfDay.minusMonths(1), LocalDateTime.now());
-        break;
+    } else {
+      LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+      switch (findFor) {
+        case "today":
+          requestedNotes = noteService.findAllByCreatedAtBetween(startOfDay, LocalDateTime.now());
+          break;
+        case "2days":
+          requestedNotes =
+              noteService.findAllByCreatedAtBetween(startOfDay.minusHours(48), LocalDateTime.now());
+          break;
+        case "week":
+          requestedNotes =
+              noteService.findAllByCreatedAtBetween(startOfDay.minusWeeks(1), LocalDateTime.now());
+          break;
+        case "month":
+          requestedNotes =
+              noteService.findAllByCreatedAtBetween(startOfDay.minusMonths(1), LocalDateTime.now());
+          break;
+      }
     }
 
     model.addAttribute("notes", requestedNotes);
