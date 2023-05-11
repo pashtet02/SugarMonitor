@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="parts/navbarPart :: navbar"></nav>
 <div class="container">
-    <h1 th:text="#{profile.header}" class="my-5">Settings</h1>
+    <h4 th:text="#{profile.header}">Settings</h4>
     <form method="POST" action="/settings/update">
         <div class="card my-4">
             <div class="card-header">
