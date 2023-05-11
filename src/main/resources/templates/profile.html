@@ -7,22 +7,26 @@
     <h1 th:text="#{profile.header}" class="my-5">Settings</h1>
     <form method="POST" action="/settings/update">
         <div class="card my-4">
-            <h5 th:text="#{profile.language}" class="card-header">Language</h5>
+            <div class="card-header">
+                <h5 th:text="#{profile.language}" class="card-title">Language</h5>
+            </div>
             <div class="card-body">
-                <div class="btn-group">
-                    <div class="dropdown">
-                        <button th:text="#{profile.english}"  class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            English
-                        </button>
-                        <div th:text="#{profile.ukrainian}"  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/settings?lang=uk">Ukrainian</a>
-                        </div>
-                    </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="language" id="ukrainian" value="UK"
+                           th:checked="${profile.getLanguage() == 'UK'}">
+                    <label th:text="#{profile.ukrainian}"  class="form-check-label" for="ukrainian">
+                        Ukrainian
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="language" id="english" value="EN"
+                           th:checked="${profile.getLanguage() == 'EN'}">
+                    <label th:text="#{profile.english}"  class="form-check-label" for="english">
+                        English
+                    </label>
                 </div>
             </div>
         </div>
-
         <div class="card my-4">
             <div class="card-header">
                 <h5 th:text="#{profile.units}" class="card-title">Units</h5>
@@ -40,28 +44,6 @@
                            th:checked="${preferableUnits == 'mgdl'}">
                     <label class="form-check-label" for="mgdl">
                         mg/dL
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="card my-4">
-            <div class="card-header">
-                <h5 th:text="#{profile.dateformat}" class="card-title">Date format</h5>
-            </div>
-            <div class="card-body">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="hours" id="12hoursDateFormat" value="12"
-                           th:checked="${preferableTimeFormat == 12}">
-                    <label th:text="'12' + ' ' + #{profile.hours}" class="form-check-label" for="12hoursDateFormat">
-                        12 hours
-                    </label>
-                </div>
-                <div class="form-check">
-                    <!--If it is not 12 then put it 24, maybe somewhere I forgot to setup value for that radioBox-->
-                    <input class="form-check-input" type="radio" name="hours" id="24hoursDateFormat" value="24"
-                           th:checked="${preferableTimeFormat == 24}">
-                    <label th:text="'24' + ' ' + #{profile.hours}" class="form-check-label" for="24hoursDateFormat">
-                        24 hours
                     </label>
                 </div>
             </div>

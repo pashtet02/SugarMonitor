@@ -34,6 +34,7 @@ public class ProfileController {
     model.addAttribute("highBoundNum", userProfile.getHighBoundLimit());
     model.addAttribute("lowerBoundNum", userProfile.getLowerBoundLimit());
     model.addAttribute("user", user);
+    model.addAttribute("profile", userProfile);
 
     return "profile";
   }
@@ -42,8 +43,9 @@ public class ProfileController {
   @PreAuthorize("hasAuthority('ADMIN')")
   public String updateProfile(
       @AuthenticationPrincipal User user,
+      @RequestParam(name = "language", required = false, defaultValue = "EN") String language,
       @RequestParam(name = "units", required = false) String units,
-      @RequestParam(name = "hours", required = false) int hoursFormat,
+      @RequestParam(name = "hours", required = false, defaultValue = "24") int hoursFormat,
       @RequestParam(name = "highBoundNum", required = false) double highBoundNum,
       @RequestParam(name = "lowerBoundNum", required = false) double lowerBoundNum,
       @RequestParam(name = "highAlertSoundEnabled", required = false) boolean highAlertSoundEnabled,
@@ -54,9 +56,9 @@ public class ProfileController {
     String formattedDateTime = currentDateTime.format(formatter);
     Profile profile =
         Profile.builder()
-            .language("EN")
+            .language(language)
             .createdAt(formattedDateTime)
-            .timeFormat(hoursFormat) // enum here too
+            .timeFormat(hoursFormat) // enum here too (disabled on UI for now)
             .highAlertSoundEnabled(highAlertSoundEnabled)
             .highBoundLimit(highBoundNum)
             .lowAlertSoundEnabled(lowAlertSoundEnabled)
@@ -66,6 +68,6 @@ public class ProfileController {
 
     profileService.save(profile);
 
-    return "redirect:/settings";
+    return "redirect:/settings?lang=" + language;
   }
 }
