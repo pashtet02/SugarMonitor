@@ -114,4 +114,25 @@ public class GraphServiceImpl implements GraphService {
     }
     return result;
   }
+
+  @Override
+  public String convertEntryHourIntoStringOnGraph(Entry entry) {
+
+    LocalDateTime entrySysTime = entry.getSysTime();
+
+    int hour = entrySysTime.getHour();
+    // To avoid time like 2:1 or 14:6 or 2:55
+    String hourStr = String.valueOf(hour);
+    if (hour < 10) {
+      hourStr = "0" + hourStr;
+    }
+    int minute = entrySysTime.getMinute();
+    // To avoid time like 2:1 or 14:6 or 2:55
+    String minuteStr = String.valueOf(minute);
+    if (minute < 10) {
+      minuteStr = "0" + minuteStr;
+    }
+
+    return hourStr + ":" + minuteStr;
+  }
 }

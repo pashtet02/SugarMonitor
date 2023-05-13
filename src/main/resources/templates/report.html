@@ -78,6 +78,10 @@
                             document.querySelectorAll("#line-chart").forEach(function (element) {
                                 // Parse the chart data from the HTML data attributes
                                 var categories = element.getAttribute("data-categories").split(",");
+                                const categoriesData = categories.map(item=>{
+                                    return item.trim().replace("[", "").replace("]", "")
+                                })
+
                                 var values = element.getAttribute("data-values").split(",");
                                 var lowSugarLine = element.getAttribute("data-low-sugar-line");
                                 var highSugarLine = element.getAttribute("data-high-sugar-line");
@@ -105,7 +109,7 @@
                                         text: ''
                                     },
                                     xAxis: {
-                                        categories: categories,
+                                        categories: categoriesData,
                                         crosshair: true,
                                     },
                                     yAxis: {
@@ -137,6 +141,11 @@
                                                 }
                                             }
                                         }]
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            lineWidth: 3
+                                        }
                                     },
                                     series: [{
                                         name: '',
@@ -179,59 +188,184 @@
                                     weeks</a>
                                 <a href="/report/weektoweek?generateFor=month" class="btn btn-primary mx-1">For
                                     month</a>
-                                <a href="/report/weektoweek?generateFor=3month" class="btn btn-primary mx-1">For 3
+                                <a href="/report/weektoweek?generateFor=3months" class="btn btn-primary mx-1">For 3
                                     months</a>
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-7 align-self-end align-items-end justify-content-end">
-                                <input class="form-check-input" type="checkbox" name="lowAlertSoundEnabled"
-                                       id="monday" value="monday">
-                                <label class="form-check-label" for="monday">
-                                    Monday
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="tuesday"
-                                       id="tuesday" value="tuesday">
-                                <label class="form-check-label" for="tuesday">
-                                    Tuesday
-                                </label>
-                                <input class="form-check-input mr-2" type="checkbox" name="wednesday"
-                                       id="wednesday" value="wednesday">
-                                <label class="form-check-label" for="wednesday">
-                                    Wednesday
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="thursday"
-                                       id="thursday" value="thursday">
-                                <label class="form-check-label" for="thursday">
-                                    Thursday
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="friday"
-                                       id="friday" value="friday">
-                                <label class="form-check-label" for="friday">
-                                    Friday
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="saturday"
-                                       id="saturday" value="saturday">
-                                <label class="form-check-label" for="saturday">
-                                    Saturday
-                                </label>
-                                <input class="form-check-input" type="checkbox" name="sunday"
-                                       id="sunday" value="sunday">
-                                <label class="form-check-label" for="sunday">
-                                    Sunday
-                                </label>
+                            <div class="text-begin">
+                                <button class="btn btn-primary" type="submit" id="show-btn-week">Show</button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="text-begin">
-                            <button class="btn btn-primary" type="submit" id="show-btn-week">Show</button>
                         </div>
                     </div>
                 </form>
             </div>
+            <div th:each="dto : ${dtos}">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${dto.weekTitle}"></h5>
+                        <div id="week-chart"
+                             th:attr="monday-values=${dto.getMondayEntries().entrySet()},
+                         tuesday-values=${dto.getTuesdayEntries().entrySet()},
+                         wednesday-values=${dto.getWednesdayEntries().entrySet()},
+                         thursday-values=${dto.getThursdayEntries().entrySet()},
+                         friday-values=${dto.getFridayEntries().entrySet()},
+                         saturday-values=${dto.getSaturdayEntries().entrySet()},
+                         sunday-values=${dto.getSundayEntries().entrySet()},
+                    data-low-sugar-line=${lowSugarLine},
+                    data-high-sugar-line=${highSugarLine}">
+                        </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script
+                                src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+                        <!-- Latest compiled and minified JavaScript -->
+                        <script
+                                src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                        <script>
+                            // Iterate through all the sugarMap elements
+                            document.querySelectorAll("#week-chart").forEach(function (element) {
+                                // Parse the chart data from the HTML data attributes
+                                var mondayValues = element.getAttribute("monday-values").split(",");
+                                const mondayData = mondayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                console.log(mondayData);
+                                var tuesdayValues = element.getAttribute("tuesday-values").split(",");
+                                const tuesdayData = tuesdayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var wednesdayValues = element.getAttribute("wednesday-values").split(",");
+                                const wednesdayData = wednesdayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var thursdayValues = element.getAttribute("thursday-values").split(",");
+                                const thursdayData = thursdayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var fridayValues = element.getAttribute("friday-values").split(",");
+                                const fridayData = fridayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var saturdayValues = element.getAttribute("saturday-values").split(",");
+                                const saturdayData = saturdayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var sundayValues = element.getAttribute("sunday-values").split(",");
+                                const sundayData = sundayValues.map(item=>{
+                                    const arr = item.split("=");
+                                    return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
+                                })
+                                var lowSugarLine = element.getAttribute("data-low-sugar-line");
+                                var highSugarLine = element.getAttribute("data-high-sugar-line");
+
+                                // Create the chart
+                                Highcharts.chart(element, {
+                                    chart: {
+                                        type: 'line'
+                                    },
+                                    legend: {
+                                        enabled: true
+                                    },
+                                    title: {
+                                        text: ''
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
+                                    subtitle: {
+                                        text: ''
+                                    },
+                                    xAxis: {},
+                                    yAxis: {
+                                        title: {
+                                            text: ''
+                                        },
+                                        plotLines: [{
+                                            value: lowSugarLine,
+                                            color: '#f75c5c',
+                                            dashStyle: 'shortdash',
+                                            width: 2,
+                                            label: {
+                                                text: '',
+                                                align: 'center',
+                                                style: {
+                                                    color: '#f75c5c'
+                                                }
+                                            }
+                                        }, {
+                                            value: highSugarLine,
+                                            color: '#ffea00',
+                                            dashStyle: 'shortdash',
+                                            width: 2,
+                                            label: {
+                                                text: '',
+                                                align: 'center',
+                                                style: {
+                                                    color: '#ffea00'
+                                                }
+                                            }
+                                        }]
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
+                                        pointFormat: '<tr><td id="point-color" style="color:{series.color}; padding:0">{series.name}: </td>' +
+                                            '<td style="padding:0"><b>{point.y:.1f} [[${profile.getUnits()}]]</b></td></tr>',
+                                        footerFormat: '</table>',
+                                        shared: true,
+                                        useHTML: true
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            lineWidth: 2
+                                        }
+                                    },
+                                    series: [{
+                                        name: 'Monday',
+                                        data: mondayData,
+                                        color: '#9c27b0'
+                                    },{
+                                        name: 'Tuesday',
+                                        data: tuesdayData,
+                                        color: '#673ab7'
+                                    },{
+                                        name: 'Wednesday',
+                                        data: wednesdayData,
+                                        color: '#3f51b5'
+                                    },{
+                                        name: 'Thursday',
+                                        data: thursdayData,
+                                        color: '#2196f3'
+                                    },{
+                                        name: 'Friday',
+                                        data: fridayData,
+                                        color: '#00bcd4'
+                                    },{
+                                        name: 'Saturday',
+                                        data: saturdayData,
+                                        color: '#009688'
+                                    },{
+                                        name: 'Sunday',
+                                        data: sundayData,
+                                        color: '#9272c9'
+                                    }]
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
         </div>
         </div>
+
+
 
     <div th:class="${generalTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="general" role="tabpanel" aria-labelledby="general-tab">
         <div class="card mb-2">

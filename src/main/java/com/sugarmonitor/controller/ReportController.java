@@ -2,6 +2,7 @@ package com.sugarmonitor.controller;
 
 import static java.lang.Double.parseDouble;
 
+import com.sugarmonitor.dto.LineGraphDTO;
 import com.sugarmonitor.dto.Report;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
@@ -11,7 +12,6 @@ import com.sugarmonitor.service.ProfileService;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -67,39 +67,52 @@ public class ReportController {
     toCal.set(Calendar.HOUR_OF_DAY, 23);
     toCal.set(Calendar.MINUTE, 59);
     toCal.set(Calendar.SECOND, 59);
-    if (generateFor.equals("today")) {
-      from = fromCal.getTime();
-      to = new Date();
-    } else if (generateFor.equals("2days")) {
-      fromCal.add(Calendar.DATE, -1);
-      from = fromCal.getTime();
-      to = new Date();
-    } else if (generateFor.equals("week")) {
-      fromCal.add(Calendar.DATE, -7);
-      from = fromCal.getTime();
-      to = toCal.getTime();
-    } else if (generateFor.equals("month")) {
-      fromCal.add(Calendar.MONTH, -1);
-      fromCal.getTime();
-      from = fromCal.getTime();
-      to = toCal.getTime();
-    } else if (generateFor.equals("3months")) {
-      fromCal.add(Calendar.MONTH, -3);
-      fromCal.getTime();
-      from = fromCal.getTime();
-      to = toCal.getTime();
-    } else {
-      if (fromDate == null) {
-        // set default value as 7 days before current time
+    switch (generateFor) {
+      case "today":
+        from = fromCal.getTime();
+        to = new Date();
+        break;
+      case "2days":
+        fromCal.add(Calendar.DATE, -1);
+        from = fromCal.getTime();
+        to = new Date();
+        break;
+      case "week":
         fromCal.add(Calendar.DATE, -7);
         from = fromCal.getTime();
-      } else {
-        from = fromDate;
-      }
-
-      if (toDate == null) {
         to = toCal.getTime();
-      } else to = toCal.getTime();
+        break;
+      case "month":
+        fromCal.add(Calendar.MONTH, -1);
+        fromCal.getTime();
+        from = fromCal.getTime();
+        to = toCal.getTime();
+        break;
+      case "3months":
+        fromCal.add(Calendar.MONTH, -3);
+        fromCal.getTime();
+        from = fromCal.getTime();
+        to = toCal.getTime();
+        break;
+      default:
+        if (fromDate == null) {
+          // set default value as 7 days before current time
+          fromCal.add(Calendar.DATE, -7);
+          from = fromCal.getTime();
+        } else {
+          from = fromDate;
+        }
+
+        if (toDate == null) {
+          to = toCal.getTime();
+        } else {
+          toCal.setTime(toDate);
+          toCal.set(Calendar.HOUR_OF_DAY, 23);
+          toCal.set(Calendar.MINUTE, 59);
+          toCal.set(Calendar.SECOND, 59);
+          to = toCal.getTime();
+        }
+        break;
     }
 
     Profile activeProfile = profileService.getProfile();
@@ -132,6 +145,8 @@ public class ReportController {
           Date toDateWeek,
       Model model) {
 
+    Date from;
+    Date to;
     Calendar fromCal = Calendar.getInstance();
     fromCal.set(Calendar.HOUR_OF_DAY, 0);
     fromCal.set(Calendar.MINUTE, 0);
@@ -141,18 +156,72 @@ public class ReportController {
     toCal.set(Calendar.HOUR_OF_DAY, 23);
     toCal.set(Calendar.MINUTE, 59);
     toCal.set(Calendar.SECOND, 59);
+    if (generateFor.equals("week")) {
+      // Set the day of the week to Monday
+      fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-    LocalDateTime monday = getStartOfPreviousMonday();
+      // If the resulting date is after today's date, subtract 7 days
+      if (fromCal.getTime().after(new Date())) {
+        fromCal.add(Calendar.DAY_OF_MONTH, -7);
+      }
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else if (generateFor.equals("2weeks")) {
+      // Set the day of the week to Monday
+      fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+      fromCal.add(Calendar.DAY_OF_MONTH, -7);
+      // If the resulting date is after today's date, subtract 14 days
+      if (fromCal.getTime().after(new Date())) {
+        fromCal.add(Calendar.DAY_OF_MONTH, -7);
+      }
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else if (generateFor.equals("month")) {
+      // Set the day of the week to Monday
+      fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+      fromCal.add(Calendar.DAY_OF_MONTH, -21);
+      // If the resulting date is after today's date, subtract 14 days
+      if (fromCal.getTime().after(new Date())) {
+        fromCal.add(Calendar.DAY_OF_MONTH, -7);
+      }
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else if (generateFor.equals("3months")) {
+      // Set the day of the week to Monday
+      fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+      fromCal.add(Calendar.DAY_OF_MONTH, -7 * 12);
+      // If the resulting date is after today's date, subtract 13 weeks
+      if (fromCal.getTime().after(new Date())) {
+        fromCal.add(Calendar.DAY_OF_MONTH, -7);
+      }
+      from = fromCal.getTime();
+      to = toCal.getTime();
+    } else {
+      if (fromDateWeek == null) {
+        // Set the day of the week to Monday
+        fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-    Date from;
-    Date to;
-    fromCal.add(Calendar.DATE, -21);
-    from = fromCal.getTime();
-    to = toCal.getTime();
+        // If the resulting date is after today's date, subtract 7 days
+        if (fromCal.getTime().after(new Date())) {
+          fromCal.add(Calendar.DAY_OF_MONTH, -7);
+        }
+        from = fromCal.getTime();
+      } else {
+        fromCal.setTime(fromDateWeek);
+        fromCal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        from = fromCal.getTime();
+      }
+
+      if (toDateWeek == null) {
+        to = toCal.getTime();
+      } else {
+        toCal.setTime(toDateWeek);
+        to = toCal.getTime();
+      }
+    }
 
     List<Entry> data = graphService.findByDateBetween(from.getTime(), to.getTime());
-    Map<String, List<Map<String, Double>>> map =
-        groupEntriesByWeeks(data, profileService.getProfile());
+    List<LineGraphDTO> dtos = groupEntriesByWeeks(data, profileService.getProfile());
 
     Profile activeProfile = profileService.getProfile();
 
@@ -165,7 +234,7 @@ public class ReportController {
     model.addAttribute("dayToDayTabActive", false);
     model.addAttribute("weekToWeekTabActive", true);
     model.addAttribute("generalTabActive", false);
-    model.addAttribute("weekMap", map);
+    model.addAttribute("dtos", dtos);
     model.addAttribute("user", user);
     return "report";
   }
@@ -369,17 +438,8 @@ public class ReportController {
     return parseDouble(String.format("%.1f", standardDeviation).replace(",", "."));
   }
 
-  // Helper method to get the start of the previous Monday
-  private static LocalDateTime getStartOfPreviousMonday() {
-    return LocalDateTime.now()
-        .with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
-        .withHour(0)
-        .withMinute(0)
-        .withSecond(0);
-  }
-
-  public Map<String, List<Map<String, Double>>> groupEntriesByWeeks(
-      List<Entry> entries, Profile activeProfile) {
+  public List<LineGraphDTO> groupEntriesByWeeks(List<Entry> entries, Profile activeProfile) {
+    List<LineGraphDTO> dtos = new LinkedList<>();
     Map<String, List<Map<String, Double>>> result = new LinkedHashMap<>();
     for (Entry entry : entries) {
       String day = entry.getDateString().replace("T", " ").split(" ")[0];
@@ -390,9 +450,9 @@ public class ReportController {
       LocalDate sundayOfWeek =
           entryWrittenDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
       String week =
-          mondayOfWeek.format(DateTimeFormatter.ofPattern("yy-MM-dd"))
-              + ":"
-              + sundayOfWeek.format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+          mondayOfWeek.format(DateTimeFormatter.ofPattern("dd-MM-yy"))
+              + " - "
+              + sundayOfWeek.format(DateTimeFormatter.ofPattern("dd-MM-yy"));
       result
           .computeIfAbsent(
               week,
@@ -401,14 +461,15 @@ public class ReportController {
                 for (int i = 0; i < 7; i++) {
                   emptyList.add(new LinkedHashMap<>());
                 }
+                dtos.add(LineGraphDTO.builder().weekTitle(week).weekEntries(emptyList).build());
                 return emptyList;
               })
           .get(entryWrittenDate.getDayOfWeek().getValue() - 1)
           .put(
-              graphService.convertEntryDateIntoStringOnGraph(entry),
+              graphService.convertEntryHourIntoStringOnGraph(entry),
               entry.getSgv(activeProfile.getUnits()));
     }
-    return result;
+    return dtos;
   }
 
   public Map<String, Map<String, Double>> groupEntriesByDay(

@@ -15,4 +15,6 @@ public interface GraphService {
   String parseUnicodeChar(String unicodeString);
 
   String convertEntryDateIntoStringOnGraph(Entry entry);
+
+  String convertEntryHourIntoStringOnGraph(Entry entry);
 }
