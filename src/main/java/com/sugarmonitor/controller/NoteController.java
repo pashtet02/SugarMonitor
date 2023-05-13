@@ -108,6 +108,10 @@ public class NoteController {
       return "notesList";
     }
 
+    if (noteToBeCreated.getId() != null && noteToBeCreated.getId().isBlank()) {
+      noteToBeCreated.setId(null);
+    }
+
     noteService.upsertNote(noteToBeCreated);
 
     return "redirect:/notes";
@@ -127,30 +131,10 @@ public class NoteController {
     return "notesList";
   }
 
-  /*  @PostMapping("/update/{}")
-  @PreAuthorize("hasAuthority('ADMIN')")
-  public String createNote(
-          @AuthenticationPrincipal User userInSession,
-          @ModelAttribute("noteToBeCreated") @Valid Note noteToBeCreated,
-          BindingResult bindingResult,
-          Model model) {
-    model.addAttribute("user", userInSession);
-    model.addAttribute("profile", profileService.getProfile());
-
-    if (bindingResult.hasErrors()) {
-      model.addAttribute("showNoteCreationForm", true);
-      return "notesList";
-    }
-
-    noteService.upsertNote(noteToBeCreated);
-
-    return "redirect:/notes";
-  }*/
-
   @GetMapping("/delete/{noteId}")
   @PreAuthorize("hasAuthority('ADMIN')")
   public String deleteNode(
-      @AuthenticationPrincipal User userInSession, @PathVariable String noteId, Model model) {
+      @AuthenticationPrincipal User userInSession, @PathVariable String noteId) {
     noteService.deleteById(noteId);
     return "redirect:/notes";
   }

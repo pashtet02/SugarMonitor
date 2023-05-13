@@ -50,7 +50,7 @@
             <div class="card-body">
                 <form id="create-note-form" method="POST" action="/notes/add" th:object="${noteToBeCreated}">
                     <h5 th:text="#{notesList.formTitle}">Create new note</h5>
-                    <input type="hidden" th:field="*{id}" id="note-id">
+                    <input type="hidden" th:field="*{id}" id="id">
                     <div class="form-group">
                         <label th:text="#{notesList.noteText}" for="note-text">Note Text</label>
                         <textarea th:field="*{noteText}" class="form-control" id="note-text" name="noteText" rows="3" ></textarea>
@@ -144,9 +144,9 @@
                 <strong th:text="#{notesList.noteText}">Note:</strong> <span th:text="${note.noteText}"></span><br>
                 <strong th:text="#{notesList.medications}">Medications:</strong> <span th:text="${note.medications}"></span><br>
                 <strong th:text="#{notesList.exerciseLevel}">Exercise Level:</strong>
-                <span th:each="arm : ${#numbers.sequence(1,note.exerciseLevel)}" th:classappend="${note.exerciseLevel >= arm} ? 'text-warning' : 'text-secondary'">&#x1F4AA;</span><br>
+                <span th:each="arm : ${#numbers.sequence(0,note.exerciseLevel)}" th:classappend="${note.exerciseLevel >= arm} ? 'text-warning' : 'text-secondary'">&#x1F4AA;</span><br>
                 <strong th:text="#{notesList.stressLevel}">Stress Level:  </strong>
-                <span th:each="stressEmoJi : ${#numbers.sequence(1,note.stressLevel)}" th:classappend="${note.stressLevel >= stressEmoJi} ? 'text-warning' : 'text-secondary'">&#x1F630;</span><br>
+                <span th:each="stressEmoJi : ${#numbers.sequence(0,note.stressLevel)}" th:classappend="${note.stressLevel >= stressEmoJi} ? 'text-warning' : 'text-secondary'">&#x1F630;</span><br>
                 <strong th:text="#{notesList.Weight}">Weight:</strong> <span th:text="${note.weight}"></span><br>
                 <strong th:text="#{notesList.insulinShortAction}">Insulin (Short Action):</strong> <span th:text="${note.insulinShortAction}"></span><br>
                 <strong th:text="#{notesList.insulinLongAction}">Insulin (Long Action):</strong> <span th:text="${note.insulinLongAction}"></span><br>
