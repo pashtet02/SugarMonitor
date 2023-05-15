@@ -5,6 +5,8 @@ import com.sugarmonitor.model.Profile;
 import com.sugarmonitor.repos.EntryRepository;
 import com.sugarmonitor.service.GraphService;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,23 @@ public class GraphServiceImpl implements GraphService {
     return localDtTm1.getYear() == localDtTm2.getYear()
         && localDtTm1.getMonth() == localDtTm2.getMonth()
         && localDtTm1.getDayOfMonth() == localDtTm2.getDayOfMonth();
+  }
+
+  @Override
+  public long getTimeSpendOfLastReading(long entryDate) {
+    Date currentTime = new Date();
+    Date entryWrittenTime = new Date(entryDate);
+
+    Calendar calendar1 = Calendar.getInstance();
+    calendar1.setTime(entryWrittenTime);
+    calendar1.add(Calendar.MINUTE, -1);
+
+    Calendar calendar2 = Calendar.getInstance();
+    calendar2.setTime(currentTime);
+
+    long diffInMilliseconds = calendar2.getTimeInMillis() - calendar1.getTimeInMillis();
+
+    return diffInMilliseconds / (60 * 1000);
   }
 
   @Override

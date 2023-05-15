@@ -79,11 +79,11 @@ public class GraphController {
                     (differencePrevVsLatest < 0 ? "" : "+")
                         + String.format("%,.1f", differencePrevVsLatest));
 
-                Date latestReadingTime = new Date(entry.getDate());
                 model.addAttribute(
                     "titleText",
                     graphService.createTitle(entry, differencePrevVsLatest, activeProfile));
-                model.addAttribute("latestReadingTime", latestReadingTime);
+                model.addAttribute(
+                    "latestReadingTime", graphService.getTimeSpendOfLastReading(entry.getDate()));
                 model.addAttribute(
                     "latestReading",
                     String.format("%,.1f", entry.getSgv(activeProfile.getUnits())));
