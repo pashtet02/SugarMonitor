@@ -6,58 +6,58 @@
 <div class="container mt-1">
     <div class="card">
         <div class="card-header">
-            <h4>Create new user</h4>
+            <h4 th:text="#{admin.createNewUserCardHeader}">Create new user</h4>
         </div>
         <div class="card-body">
             <form action="/admin/add" method="post" th:object="${userToBeCreated}">
                 <div class="form-group">
-                    <label for="username">Username:</label>
+                    <label for="username" th:text="#{admin.username}">Username:</label>
                     <input type="text" th:field="*{username}" class="form-control" id="username"/>
                     <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
+                    <label for="password" th:text="#{admin.password}">Password:</label>
                     <input th:field="*{password}" type="password" class="form-control" id="password" name="password">
                     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Confirm Password:</label>
+                    <label for="password" th:text="#{admin.confirmPassword}">Confirm Password:</label>
                     <input th:field="*{confirmPassword}" type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                     <div th:if="${confirmPasswordError != null}">
                         <div class="text-danger" th:text="${confirmPasswordError}">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-2 float-left">Create new user</button>
+                <button type="submit" class="btn btn-primary mt-2 float-left" th:text="#{admin.createNewUserButton}">Create new user</button>
             </form>
         </div>
     </div>
     <div class="card mt-2">
         <div class="card-header">
-            <h4>Users list</h4>
+            <h4 th:text="#{admin.usersList}">Users list</h4>
         </div>
         <div class="card-body">
             <div class="table-responsive mt-4">
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Role</th>
-                        <th>Action</th>
+                        <th th:text="#{admin.usernameColumn}">Username</th>
+                        <th th:text="#{admin.roleColumn}">Role</th>
+                        <th th:text="#{admin.Action}">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="userAccount : ${allUsers}">
                         <td th:text="${userAccount.username}"></td>
                         <td th:text="${userAccount.getRolesAsString()}"></td>
-                        <td th:if="${userAccount.isEnabled()}"><a class="btn btn-danger" th:href="@{/admin/disable/{username}(username=${userAccount.username})}">Disable</a></td>
-                        <td th:if="${!userAccount.isEnabled()}"><a class="btn btn-success" th:href="@{/admin/enable/{username}(username=${userAccount.username})}">Enable</a></td>
+                        <td th:if="${userAccount.isEnabled()}"><a class="btn btn-danger" th:text="#{admin.disableUserBtn}" th:href="@{/admin/disable/{username}(username=${userAccount.username})}">Disable</a></td>
+                        <td th:if="${!userAccount.isEnabled()}"><a class="btn btn-success" th:text="#{admin.enableUserBtn}" th:href="@{/admin/enable/{username}(username=${userAccount.username})}">Enable</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
+    </div>
 </div>
 </body>
 </html>
