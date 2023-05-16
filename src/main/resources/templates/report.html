@@ -4,23 +4,23 @@
 <body>
 <nav th:replace="parts/navbarPart :: navbar"></nav>
 <div class="container px-1">
-    <h4>SugarMonitor reporting</h4>
+    <h4 th:text="#{report.title}">SugarMonitor reporting</h4>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button th:class="${dayToDayTabActive} ? 'nav-link active' : 'nav-link'" id="day-to-day-tab" data-bs-toggle="tab" data-bs-target="#day-to-day"
-                    type="button" role="tab" aria-controls="day-to-day" th:attr="aria-selected=${dayToDayTabActive} ? 'true' : 'false'">Day to Day
+                    type="button" role="tab" aria-controls="day-to-day" th:attr="aria-selected=${dayToDayTabActive} ? 'true' : 'false'" th:text="#{report.dayToDayTabHeader}">Day to Day
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button th:class="${weekToWeekTabActive} ? 'nav-link active' : 'nav-link'" id="week-to-week-tab" data-bs-toggle="tab" data-bs-target="#week-to-week"
-                    type="button" role="tab" aria-controls="week-to-week" th:attr="aria-selected=${weekToWeekTabActive} ? 'true' : 'false'">Week to Week
+                    type="button" role="tab" aria-controls="week-to-week" th:attr="aria-selected=${weekToWeekTabActive} ? 'true' : 'false'" th:text="#{report.weekToWeekTabHeader}">Week to Week
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button th:class="${generalTabActive} ? 'nav-link active' : 'nav-link'" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button"
-                    role="tab" aria-controls="general" th:attr="aria-selected=${generalTabActive} ? 'true' : 'false'">General
+                    role="tab" aria-controls="general" th:attr="aria-selected=${generalTabActive} ? 'true' : 'false'" th:text="#{report.generalTabHeader}">General
             </button>
         </li>
     </ul>
@@ -34,23 +34,23 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <label for=fromDate class="form-label">From:</label>
+                                <label for=fromDate class="form-label" th:text="#{report.from}">From:</label>
                                 <input type="date" class="form-control" id="fromDate" name="fromDate">
                             </div>
                             <div class="col-md-3">
-                                <label for="toDate" class="form-label">To:</label>
+                                <label for="toDate" class="form-label" th:text="#{report.to}">To:</label>
                                 <input type="date" class="form-control" id="toDate" name="toDate">
                             </div>
                             <div class="col-md-4 align-self-end align-items-end justify-content-end">
-                                <a href="/report/daytoday?generateFor=today" class="btn btn-primary mx-1">Today</a>
-                                <a href="/report/daytoday?generateFor=2days" class="btn btn-primary mx-1">For 2 days</a>
-                                <a href="/report/daytoday?generateFor=week" class="btn btn-primary mx-1">For week</a>
-                                <a href="/report/daytoday?generateFor=month" class="btn btn-primary mx-1">For month</a>
+                                <a href="/report/daytoday?generateFor=today" class="btn btn-primary mx-1" th:text="#{report.today}">Today</a>
+                                <a href="/report/daytoday?generateFor=2days" class="btn btn-primary mx-1" th:text="#{report.for2days}">For 2 days</a>
+                                <a href="/report/daytoday?generateFor=week" class="btn btn-primary mx-1" th:text="#{report.forWeek}">For week</a>
+                                <a href="/report/daytoday?generateFor=month" class="btn btn-primary mx-1" th:text="#{report.forMonth}">For month</a>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="text-begin">
-                                <button class="btn btn-primary" type="submit" id="show-btn">Show</button>
+                                <button class="btn btn-primary" type="submit" id="show-btn" th:text="#{report.showButton}">Show</button>
                             </div>
                         </div>
                     </div>
@@ -183,18 +183,18 @@
                                 <input type="date" class="form-control" id="toDateWeek" name="toDateWeek">
                             </div>
                             <div class="col-md-6 align-self-end align-items-end justify-content-end">
-                                <a href="/report/weektoweek?generateFor=week" class="btn btn-primary mx-1">This week</a>
-                                <a href="/report/weektoweek?generateFor=2weeks" class="btn btn-primary mx-1">For 2
+                                <a href="/report/weektoweek?generateFor=week" class="btn btn-primary mx-1" th:text="#{report.thisWeek}">This week</a>
+                                <a href="/report/weektoweek?generateFor=2weeks" class="btn btn-primary mx-1" th:text="#{report.for2weeks}">For 2
                                     weeks</a>
-                                <a href="/report/weektoweek?generateFor=month" class="btn btn-primary mx-1">For
+                                <a href="/report/weektoweek?generateFor=month" class="btn btn-primary mx-1" th:text="#{report.forMonth}">For
                                     month</a>
-                                <a href="/report/weektoweek?generateFor=3months" class="btn btn-primary mx-1">For 3
+                                <a href="/report/weektoweek?generateFor=3months" class="btn btn-primary mx-1" th:text="#{report.for3Months}">For 3
                                     months</a>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="text-begin">
-                                <button class="btn btn-primary" type="submit" id="show-btn-week">Show</button>
+                                <button class="btn btn-primary" type="submit" id="show-btn-week" th:text="#{report.showButton}">Show</button>
                             </div>
                         </div>
                     </div>
@@ -213,7 +213,14 @@
                          saturday-values=${dto.getSaturdayEntries().entrySet()},
                          sunday-values=${dto.getSundayEntries().entrySet()},
                     data-low-sugar-line=${lowSugarLine},
-                    data-high-sugar-line=${highSugarLine}">
+                    data-high-sugar-line=${highSugarLine},
+                    monday=#{report.monday},
+                    tuesday=#{report.tuesday},
+                    wednesday=#{report.wednesday},
+                    thursday=#{report.thursday},
+                    friday=#{report.friday},
+                    saturday=#{report.saturday},
+                    sunday=#{report.sunday}">
                         </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <script
                                 src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -231,7 +238,6 @@
                                     const arr = item.split("=");
                                     return [arr[0].trim().replace("[", "").replace("]", ""), Number(arr[1])]
                                 })
-                                console.log(mondayData);
                                 var tuesdayValues = element.getAttribute("tuesday-values").split(",");
                                 const tuesdayData = tuesdayValues.map(item=>{
                                     const arr = item.split("=");
@@ -264,7 +270,7 @@
                                 })
                                 var lowSugarLine = element.getAttribute("data-low-sugar-line");
                                 var highSugarLine = element.getAttribute("data-high-sugar-line");
-
+                                console.log(element.getAttribute("friday"));
                                 // Create the chart
                                 Highcharts.chart(element, {
                                     chart: {
@@ -327,31 +333,31 @@
                                         }
                                     },
                                     series: [{
-                                        name: 'Monday',
+                                        name: element.getAttribute("monday"),
                                         data: mondayData,
                                         color: '#9c27b0'
                                     },{
-                                        name: 'Tuesday',
+                                        name: element.getAttribute("tuesday"),
                                         data: tuesdayData,
                                         color: '#673ab7'
                                     },{
-                                        name: 'Wednesday',
+                                        name: element.getAttribute("wednesday"),
                                         data: wednesdayData,
                                         color: '#3f51b5'
                                     },{
-                                        name: 'Thursday',
+                                        name: element.getAttribute("thursday"),
                                         data: thursdayData,
                                         color: '#2196f3'
                                     },{
-                                        name: 'Friday',
+                                        name: element.getAttribute("friday"),
                                         data: fridayData,
                                         color: '#00bcd4'
                                     },{
-                                        name: 'Saturday',
+                                        name: element.getAttribute("saturday"),
                                         data: saturdayData,
                                         color: '#009688'
                                     },{
-                                        name: 'Sunday',
+                                        name: element.getAttribute("sunday"),
                                         data: sundayData,
                                         color: '#9272c9'
                                     }]
@@ -373,24 +379,24 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <label for=fromDateGeneral class="form-label">From:</label>
+                            <label for=fromDateGeneral class="form-label" th:text="#{report.from}">From:</label>
                             <input type="date" class="form-control" id="fromDateGeneral" name="fromDateGeneral">
                         </div>
                         <div class="col-md-3">
-                            <label for="toDateGeneral" class="form-label">To:</label>
+                            <label for="toDateGeneral" class="form-label" th:text="#{report.to}">To:</label>
                             <input type="date" class="form-control" id="toDateGeneral" name="toDateGeneral">
                         </div>
                         <div class="col-md-6 align-self-end align-items-end justify-content-end">
-                            <a href="/report/general?generateFor=today" class="btn btn-primary mx-1">Today</a>
-                            <a href="/report/general?generateFor=2days" class="btn btn-primary mx-1">For 2 days</a>
-                            <a href="/report/general?generateFor=week" class="btn btn-primary mx-1">For week</a>
-                            <a href="/report/general?generateFor=month" class="btn btn-primary mx-1">For month</a>
-                            <a href="/report/general?generateFor=3months" class="btn btn-primary mx-1">For 3 months</a>
+                            <a href="/report/general?generateFor=today" class="btn btn-primary mx-1" th:text="#{report.today}">Today</a>
+                            <a href="/report/general?generateFor=2days" class="btn btn-primary mx-1" th:text="#{report.for2days}">For 2 days</a>
+                            <a href="/report/general?generateFor=week" class="btn btn-primary mx-1" th:text="#{report.forWeek}">For week</a>
+                            <a href="/report/general?generateFor=month" class="btn btn-primary mx-1" th:text="#{report.forMonth}">For month</a>
+                            <a href="/report/general?generateFor=3months" class="btn btn-primary mx-1" th:text="#{report.for3Months}">For 3 months</a>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="text-begin">
-                            <button class="btn btn-primary" type="submit" id="show-btn-general">Show</button>
+                            <button class="btn btn-primary" type="submit" id="show-btn-general" th:text="#{report.showButton}">Show</button>
                         </div>
                     </div>
                 </div>
@@ -400,7 +406,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div id="pieChart"></div>
+                        <div th:attr="high=#{report.high},low=#{report.low},inRange=#{report.inRange},percents=#{report.percents}"
+                             id="pieChart"></div>
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <script
                                 src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -410,33 +417,35 @@
                         <script src="https://code.highcharts.com/highcharts.js"></script>
                         <script src="https://code.highcharts.com/modules/exporting.js"></script>
                         <script>
-                            // HighCharts pie chart
-                            Highcharts.chart('pieChart', {
-                                chart: {
-                                    type: 'pie'
-                                },
-                                title: {
-                                    text: '[[${report.name}]]'
-                                },
-                                credits: {
-                                    enabled: false
-                                },
-                                series: [{
-                                    name: 'Percents',
-                                    data: [{
-                                        name: 'Low',
-                                        y: [[${report.lowSugarPercentage}]],
-                                        color: '#FF0000'
-                                    }, {
-                                        name: 'In Range',
-                                        y: [[${report.inRangeSugarPercentage}]],
-                                        color: '#00FF00'
-                                    }, {
-                                        name: 'High',
-                                        y: [[${report.highSugarPercentage}]],
-                                        color: '#FFFF00'
+                            document.querySelectorAll("#pieChart").forEach(function (element) {
+                                // HighCharts pie chart
+                                Highcharts.chart(element, {
+                                    chart: {
+                                        type: 'pie'
+                                    },
+                                    title: {
+                                        text: '[[${report.name}]]'
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
+                                    series: [{
+                                        name: element.getAttribute("percents"),
+                                        data: [{
+                                            name: element.getAttribute("low"),
+                                            y: [[${report.lowSugarPercentage}]],
+                                            color: '#FF0000'
+                                        }, {
+                                            name: element.getAttribute("inRange"),
+                                            y: [[${report.inRangeSugarPercentage}]],
+                                            color: '#00FF00'
+                                        }, {
+                                            name: element.getAttribute("high"),
+                                            y: [[${report.highSugarPercentage}]],
+                                            color: '#FFFF00'
+                                        }]
                                     }]
-                                }]
+                                });
                             });
                         </script>
                     </div>
@@ -444,18 +453,18 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Range</th>
-                                <th>% of Readings</th>
-                                <th># of Readings</th>
-                                <th>Average</th>
-                                <th>Median</th>
-                                <th>Standard Deviation</th>
-                                <th>A1c estimation*</th>
+                                <th th:text="#{report.rangeColumnTitle}">Range</th>
+                                <th th:text="#{report.percentOfReadingsColumnTitle}">% of Readings</th>
+                                <th th:text="#{report.numOfReadingsColumnTitle}"># of Readings</th>
+                                <th th:text="#{report.average}">Average</th>
+                                <th th:text="#{report.median}">Median</th>
+                                <th th:text="#{report.stdDev}">Standard Deviation</th>
+                                <th th:text="#{report.a1cEst}">A1c estimation*</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td th:text="'Low (<' + ${profile.getLowerBoundLimit()} + ')'">-</td>
+                                <td th:text="'(' + #{report.low} +  '<' + ${profile.getLowerBoundLimit()} + ')'">-</td>
                                 <td th:text="${report.getLowSugarPercentage()}">-</td>
                                 <td th:text="${report.getNumOfLowEntries()}">-</td>
                                 <td th:text="${report.getAverageLow()}">-</td>
@@ -464,7 +473,7 @@
                                 <td ></td>
                             </tr>
                             <tr>
-                                <td th:text="'In Range'"></td>
+                                <td th:text="#{report.inRange}"></td>
                                 <td th:text="${report.getInRangeSugarPercentage()}">-</td>
                                 <td th:text="${report.getNumOfInRangeEntries()}">-</td>
                                 <td th:text="${report.getAverageInRange()}">-</td>
@@ -473,7 +482,7 @@
                                 <td ></td>
                             </tr>
                             <tr>
-                                <td th:text="'High (>' + ${profile.getHighBoundLimit()} + ')'">-</td>
+                                <td th:text="'(' + #{report.high} +  '<' + ${profile.getHighBoundLimit()} + ')'">-</td>
                                 <td th:text="${report.getHighSugarPercentage()}">-</td>
                                 <td th:text="${report.getNumOfHighEntries()}">-</td>
                                 <td th:text="${report.getAverageHigh()}">-</td>
