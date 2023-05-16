@@ -25,7 +25,7 @@
                             <div class="input-group mb-0">
                                 <i class="bi bi-battery"></i>
                                 <span class="input-group-text" id="lastReadingLabel"><i class="bi bi-battery"></i></span>
-                                <input style="width: auto;" aria-describedby="lastReadingLabel" type="text" id="lastReadingWas" class="form-control" th:value="'Last reading was: ' + ${latestReadingTime}+ ' minutes ago'"   disabled>
+                                <input style="width: auto;" aria-describedby="lastReadingLabel" type="text" id="lastReadingWas" class="form-control" th:value="#{barGraph.lastReadingWas} + ' ' + ${latestReadingTime} + ' ' + #{barGraph.minutesAgo}"   disabled>
                             </div>
                         </div>
                     </div>
@@ -44,11 +44,11 @@
                         <div class="card-body">
                             <div class="input-group mb-2">
                                 <span class="input-group-text" id="noBatteryForDevice1"><i class="bi bi-battery"></i></span>
-                                <input style="width: auto;" aria-describedby="noBatteryForDevice1" type="text" id="device1" class="form-control" th:value="${device1?.getDevice()} + ' battery: ' + ${device1?.getUploader()?.getBattery()} + '%'" disabled>
+                                <input style="width: auto;" aria-describedby="noBatteryForDevice1" type="text" id="device1" class="form-control" th:value="${device1?.getDevice()} + ' ' + #{barGraph.battery} +  ' ' + ${device1?.getUploader()?.getBattery()} + '%'" disabled>
                             </div>
                             <div class="input-group mb-0">
                                 <span class="input-group-text" id="noBatteryForDevice2"><i class="bi bi-battery"></i></span>
-                                <input style="width: auto;" aria-describedby="noBatteryForDevice2" type="text" id="device2" class="form-control" th:value="${device2?.getDevice()} + ' battery: ' + ${device2?.getUploader()?.getBattery()} + '%'" disabled>
+                                <input style="width: auto;" aria-describedby="noBatteryForDevice2" type="text" id="device2" class="form-control" th:value="${device2?.getDevice()} + ' ' + #{barGraph.battery} +  ' ' + ${device2?.getUploader()?.getBattery()} + '%'" disabled>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
 
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    Display for:
+                                    <label th:text="#{barGraph.displayFor}"></label>
                                     <div class="btn-group" role="group" aria-label="Display for">
                                         <a href="/main?displayForLast=2" type="button" class="btn btn-secondary">2</a>
                                         <a href="/main?displayForLast=3" type="button" class="btn btn-secondary">3</a>
