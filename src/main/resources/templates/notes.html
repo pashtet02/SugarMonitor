@@ -15,7 +15,7 @@
 
     <div class="card mb-2">
         <form method="GET" action="/notes">
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="row">
                     <div class="col-md-3">
                         <label th:text="#{notes.from}" for=fromDate class="form-label">From:</label>
@@ -44,10 +44,10 @@
         <button th:text="#{notes.showCreationForm}" th:if="${user != null && user.isAdmin()}" class="btn btn-primary mb-2 float-right" aria-expanded="false" type="button" data-toggle="collapse" data-target="#create-note-card"  aria-controls="create-note-card">
             Show creation form
         </button>
-    <div class="card">
+    <div class="card ">
 
         <div th:class="${showNoteCreationForm} ? 'card-body' : 'card-body collapse'" id="create-note-card">
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <form id="create-note-form" method="POST" action="/notes/add" th:object="${noteToBeCreated}">
                     <h5 th:text="#{notes.formTitle}">Create new note</h5>
                     <input type="hidden" th:field="*{id}" id="id">
@@ -133,7 +133,7 @@
 
     <!-- Iterate through the list of notes and create a card for each one -->
     <div th:each="note : ${notes}" class="card my-4">
-        <div class="card-body">
+        <div class="card-body bg-light">
             <div th:switch="${note.mealType}">
                 <h5 class="card-title" th:case="'BREAKFAST'" th:text="#{notes.breakfast} + ' ' + ${note.dateString}">Breakfast</h5>
                 <h5 class="card-title" th:case="'DINNER'" th:text="#{notes.dinner} + ' ' + ${note.dateString}">Dinner</h5>

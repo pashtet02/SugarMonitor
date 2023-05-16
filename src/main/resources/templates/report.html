@@ -31,7 +31,7 @@
         <div th:class="${dayToDayTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="day-to-day" role="tabpanel" aria-labelledby="day-to-day-tab">
             <div class="card mb-2">
                 <form method="GET" action="/report/daytoday">
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for=fromDate class="form-label" th:text="#{report.from}">From:</label>
@@ -58,7 +58,7 @@
             </div>
             <div th:each="outerMap : ${map}">
                 <div class="card mb-2">
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <h5 class="card-title" th:text="${outerMap.key}"></h5>
                         <div id="line-chart"
                              th:attr="data-categories=${outerMap.value.keySet()},
@@ -172,7 +172,7 @@
         <div th:class="${weekToWeekTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="week-to-week" role="tabpanel" aria-labelledby="week-to-week-tab">
             <div class="card mb-2">
                 <form method="GET" action="/report/weektoweek">
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for=fromDateWeek class="form-label">From:</label>
@@ -202,7 +202,7 @@
             </div>
             <div th:each="dto : ${dtos}">
                 <div class="card mb-2">
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <h5 class="card-title" th:text="${dto.weekTitle}"></h5>
                         <div id="week-chart"
                              th:attr="monday-values=${dto.getMondayEntries().entrySet()},
@@ -376,7 +376,7 @@
     <div th:class="${generalTabActive} ? 'tab-pane fade show active' : 'tab-pane fade'" id="general" role="tabpanel" aria-labelledby="general-tab">
         <div class="card mb-2">
             <form method="GET" action="/report/general">
-                <div class="card-body">
+                <div class="card-body bg-light">
                     <div class="row">
                         <div class="col-md-3">
                             <label for=fromDateGeneral class="form-label" th:text="#{report.from}">From:</label>
@@ -403,7 +403,7 @@
             </form>
         </div>
         <div th:if="${report != null}" class="card">
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="row">
                     <div class="col-md-6">
                         <div th:attr="high=#{report.high},low=#{report.low},inRange=#{report.inRange},percents=#{report.percents}"

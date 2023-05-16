@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h5 th:text="#{profile.language}" class="card-title">Language</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="language" id="ukrainian" value="UK"
                            th:checked="${profile.getLanguage() == 'UK'}">
@@ -31,7 +31,7 @@
             <div class="card-header">
                 <h5 th:text="#{profile.units}" class="card-title">Units</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="units" id="mmol" value="mmol"
                            th:checked="${preferableUnits == 'mmol'}">
@@ -52,7 +52,7 @@
             <div class="card-header">
                 <h5 th:text="#{profile.bloodSugarCardHeader}" class="card-title">Blood Sugar Limits</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="form-group">
                     <label th:text="#{profile.bloodSugarLowerBoundLabel}" for="lowerBoundNum">Lower bound</label>
                     <input type="number" step="0.1" class="form-control" name="lowerBoundNum" id="lowerBoundNum" th:value="${lowerBoundNum != 0 ? lowerBoundNum : (preferableUnits == 'mgdl' ? 70 : 3.9)}">
