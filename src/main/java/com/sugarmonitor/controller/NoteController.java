@@ -29,7 +29,7 @@ public class NoteController {
   private final ProfileService profileService;
 
   @GetMapping
-  public String getNotesList(
+  public String getnotes(
       @AuthenticationPrincipal User userInSession,
       @RequestParam(name = "findFor", required = false, defaultValue = "week") String findFor,
       @RequestParam(name = "fromDate", required = false)
@@ -90,7 +90,7 @@ public class NoteController {
     model.addAttribute("noteToBeCreated", Note.builder().mealType("OTHER").build());
     model.addAttribute("showNoteCreationForm", false);
 
-    return "notesList";
+    return "notes";
   }
 
   @PostMapping("/add")
@@ -105,7 +105,7 @@ public class NoteController {
 
     if (bindingResult.hasErrors()) {
       model.addAttribute("showNoteCreationForm", true);
-      return "notesList";
+      return "notes";
     }
 
     if (noteToBeCreated.getId() != null && noteToBeCreated.getId().isBlank()) {
@@ -128,7 +128,7 @@ public class NoteController {
     model.addAttribute("profile", profileService.getProfile());
     model.addAttribute("showNoteCreationForm", true);
 
-    return "notesList";
+    return "notes";
   }
 
   @GetMapping("/delete/{noteId}")

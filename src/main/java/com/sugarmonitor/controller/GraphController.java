@@ -29,7 +29,7 @@ public class GraphController {
   private final DeviceStatusRepository deviceStatusRepository;
 
   @GetMapping("/main")
-  public String barGraph(
+  public String main(
       @AuthenticationPrincipal User user,
       @RequestParam(required = false, defaultValue = "2") Long displayForLast,
       Model model) {
@@ -98,6 +98,6 @@ public class GraphController {
                 }
               });
     }
-    return "barGraph";
+    return "main";
   }
 }

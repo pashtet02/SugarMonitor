@@ -26,7 +26,7 @@
                 <div class="col-sm-4">
                     <div class="card mb-2">
                         <div class="card-body">
-                            <label th:text="#{barGraph.displayFor}"></label>
+                            <label th:text="#{main.displayFor}"></label>
                             <div class="btn-group" role="group" aria-label="Display for">
                                 <a href="/main?displayForLast=2" type="button" class="btn btn-secondary">2</a>
                                 <a href="/main?displayForLast=3" type="button" class="btn btn-secondary">3</a>
@@ -51,7 +51,7 @@
 
                                 <input style="width: auto;" aria-describedby="noBatteryForDevice2" type="text"
                                        id="device2" class="form-control"
-                                       th:value="${device2?.getDevice()} + ' ' + #{barGraph.battery} +  ' ' + ${device2?.getUploader()?.getBattery()} + '%'"
+                                       th:value="${device2?.getDevice()} + ' ' + #{main.battery} +  ' ' + ${device2?.getUploader()?.getBattery()} + '%'"
                                        disabled>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 </span>
                                 <input style="width: auto;" aria-describedby="noBatteryForDevice1" type="text"
                                        id="device1" class="form-control"
-                                       th:value="${device1?.getDevice()} + ' ' + #{barGraph.battery} +  ' ' + ${device1?.getUploader()?.getBattery()} + '%'"
+                                       th:value="${device1?.getDevice()} + ' ' + #{main.battery} +  ' ' + ${device1?.getUploader()?.getBattery()} + '%'"
                                        disabled>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 <span class="input-group-text" id="lastReadingLabel"><i class="bi bi-alarm"></i></span>
                                 <input aria-describedby="lastReadingLabel" type="text"
                                        id="lastReadingWas" class="form-control"
-                                       th:value="#{barGraph.lastReadingWas} + ' ' + ${latestReadingTime} + ' ' + #{barGraph.minutesAgo}"
+                                       th:value="#{main.lastReadingWas} + ' ' + ${latestReadingTime} + ' ' + #{main.minutesAgo}"
                                        disabled>
                             </div>
                         </div>
