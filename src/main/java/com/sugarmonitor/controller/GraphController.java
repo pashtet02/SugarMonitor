@@ -87,6 +87,7 @@ public class GraphController {
                 model.addAttribute(
                     "latestReading",
                     String.format("%,.1f", entry.getSgv(activeProfile.getUnits())));
+                model.addAttribute("latestReadingDouble", entry.getSgv(activeProfile.getUnits()));
 
                 List<DeviceStatus> deviceStatuses =
                     deviceStatusRepository.findTop2ByOrderByCreatedAtDesc();

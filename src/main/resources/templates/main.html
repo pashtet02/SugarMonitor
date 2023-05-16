@@ -10,15 +10,27 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-4">
-                    <div class="card bg-dark text-white">
-                        <h3 class="card-title text-center d-flex flex-wrap justify-content-center mt-2">
+                    <div class="card bg-light">
+                        <h3 th:if="${latestReadingDouble lt lowSugarLine}" class="card-title text-danger text-center d-flex flex-wrap justify-content-center mt-2">
+                            <label th:text="${latestReading != null} ? ${latestReading}">0,0</label>
+                        </h3>
+                        <h3 th:if="${latestReadingDouble ge highSugarLine}" class="card-title text-warning text-center d-flex flex-wrap justify-content-center mt-2">
+                            <label th:text="${latestReading != null} ? ${latestReading}">0,0</label>
+                        </h3>
+                        <h3 th:if="${latestReadingDouble lt highSugarLine && latestReadingDouble ge lowSugarLine}" class="card-title text-success text-center d-flex flex-wrap justify-content-center mt-2">
                             <label th:text="${latestReading != null} ? ${latestReading}">0,0</label>
                         </h3>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <div class="card bg-dark text-white">
-                        <h3 class="card-title text-center d-flex flex-wrap justify-content-center mt-2">
+                    <div class="card bg-light">
+                        <h3 th:if="${latestReadingDouble lt lowSugarLine}" class="card-title text-danger text-center d-flex flex-wrap justify-content-center mt-2">
+                            <label th:text="${lastReadingValue != null} ? ${lastReadingValue}">0,0</label>
+                        </h3>
+                        <h3 th:if="${latestReadingDouble ge highSugarLine}" class="card-title text-warning text-center d-flex flex-wrap justify-content-center mt-2">
+                            <label th:text="${lastReadingValue != null} ? ${lastReadingValue}">0,0</label>
+                        </h3>
+                        <h3 th:if="${latestReadingDouble lt highSugarLine && latestReadingDouble ge lowSugarLine}" class="card-title text-success text-center d-flex flex-wrap justify-content-center mt-2">
                             <label th:text="${lastReadingValue != null} ? ${lastReadingValue}">0,0</label>
                         </h3>
                     </div>
