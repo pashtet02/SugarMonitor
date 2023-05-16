@@ -100,7 +100,9 @@
             chart: {
                 type: 'line'
             },
-            legend:{ enabled:false },
+            legend: {
+                enabled: false
+            },
             title: {
                 text: ''
             },
@@ -112,12 +114,10 @@
             },
             xAxis: {
                 categories: [[${sugarMap.keySet()}]],
-                crosshair: true,
             },
             yAxis: {
                 min: [[${yAxisGraphMinLimit}]],
                 max: [[${yAxisGraphMaxLimit}]],
-                opposite: true,
                 tickInterval: [[${yAxisGraphStep}]],
                 title: {
                     text: ''
@@ -157,10 +157,6 @@
                 useHTML: true
             },
             plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                },
                 series: {
                     lineWidth: 3
                 }
