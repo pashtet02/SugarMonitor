@@ -56,7 +56,7 @@
                         <div class="card-body bg-light">
                             <div class="input-group mb-0">
                                 <span class="input-group-text" id="noBatteryForDevice2">
-                                  <i th:if="${device2?.getUploader()?.getBattery() lt 20}" class="bi bi-battery-quarter"></i>
+                                  <i th:if="${device2?.getUploader()?.getBattery() lt 20}" class="bi bi-battery"></i>
                                   <i th:if="${device2?.getUploader()?.getBattery() ge 20 and device2?.getUploader()?.getBattery() lt 70}" class="bi bi-battery-half"></i>
                                   <i th:if="${device2?.getUploader()?.getBattery() ge 70}" class="bi bi-battery-full"></i>
                                 </span>
@@ -74,7 +74,7 @@
                         <div class="card-body bg-light">
                             <div class="input-group">
                                 <span class="input-group-text" id="noBatteryForDevice1">
-                                  <i th:if="${device1?.getUploader()?.getBattery() lt 20}" class="bi bi-battery-quarter"></i>
+                                  <i th:if="${device1?.getUploader()?.getBattery() lt 20}" class="bi bi-battery"></i>
                                   <i th:if="${device1?.getUploader()?.getBattery() ge 20 and device1?.getUploader()?.getBattery() lt 70}" class="bi bi-battery-half"></i>
                                   <i th:if="${device1?.getUploader()?.getBattery() ge 70}" class="bi bi-battery-full"></i>
                                 </span>
