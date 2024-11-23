@@ -90,7 +90,7 @@ public class ReportServiceImpl implements com.sugarmonitor.service.ReportService
         .medianInRange(calculateMedianSgv(inRangeEntries, userProfile))
         .averageTotal(averageTotalSGV)
         .stdDevInRange(calculateStandardDeviation(inRangeEntries, userProfile))
-        .HbA1cTotal(calculateHbA1c(averageTotalSGV))
+        .HbA1cTotal(calculateHbA1c(averageTotalSGV, userProfile))
         .medianInTotal(calculateMedianSgv(entries, userProfile))
         .numOfInRangeEntries(totalEntries - lowSugarEntries.size() - highSugarEntries.size())
         .stdDevTotal(calculateStandardDeviation(entries, userProfile))
@@ -100,8 +100,10 @@ public class ReportServiceImpl implements com.sugarmonitor.service.ReportService
 
   // TODO fix formulas are incorrect!
   @Override
-  public double calculateHbA1c(double averageSgv) {
-    return parseDouble(String.format("%.1f", (averageSgv + 1.59) / 1.819).replace(",", "."));
+  public double calculateHbA1c(double averageSgv, Profile userProfile) {
+    double conversionFactor = !userProfile.getUnits().equals("mmol") ? 46.7 : 2.59;
+    double HbA1cConstant = !userProfile.getUnits().equals("mmol") ? 28.7 : 1.59;
+    return parseDouble(String.format("%.1f", (averageSgv + conversionFactor) / HbA1cConstant).replace(",", "."));
   }
 
   private double calculateAverageSgv(List<Entry> entries, Profile activeProfile) {
@@ -111,6 +113,9 @@ public class ReportServiceImpl implements com.sugarmonitor.service.ReportService
   }
 
   private double calculateMedianSgv(List<Entry> entries, Profile activeProfile) {
+    if (entries.size() == 0) {
+      return 0;
+    }
     double median =
         entries.stream()
             .mapToDouble(e -> e.getSgv(activeProfile.getUnits()))
