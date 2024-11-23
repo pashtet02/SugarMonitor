@@ -26,22 +26,22 @@
                         <input type="date" class="form-control" id="toDate" name="toDate">
                     </div>
                     <div class="col-md-4 align-self-end align-items-end justify-content-end">
-                        <a href="/notes?findFor=today" class="btn btn-primary mx-1" th:text="#{notes.today}">Today</a>
-                        <a href="/notes?findFor=2days" class="btn btn-primary mx-1" th:text="#{notes.for2Days}">For 2 days</a>
-                        <a href="/notes?findFor=week" class="btn btn-primary mx-1" th:text="#{notes.froWeek}">For week</a>
-                        <a href="/notes?findFor=month" class="btn btn-primary mx-1" th:text="#{notes.forMonth}">For month</a>
+                        <a href="/notes?findFor=today" class="btn btn-info btn-gradient mx-1" th:text="#{notes.today}">Today</a>
+                        <a href="/notes?findFor=2days" class="btn btn-info btn-gradient mx-1" th:text="#{notes.for2Days}">For 2 days</a>
+                        <a href="/notes?findFor=week" class="btn btn-info btn-gradient mx-1" th:text="#{notes.froWeek}">For week</a>
+                        <a href="/notes?findFor=month" class="btn btn-info btn-gradient mx-1" th:text="#{notes.forMonth}">For month</a>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="text-begin">
-                        <button class="btn btn-primary" type="submit" id="show-btn" th:text="#{notes.showButton}">Show</button>
+                        <button class="btn btn-info btn-gradient" type="submit" id="show-btn" th:text="#{notes.showButton}">Show</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 
-        <button th:text="#{notes.showCreationForm}" th:if="${user != null && user.isAdmin()}" class="btn btn-primary mb-2 float-right" aria-expanded="false" type="button" data-toggle="collapse" data-target="#create-note-card"  aria-controls="create-note-card">
+        <button th:text="#{notes.showCreationForm}" th:if="${user != null && user.isAdmin()}" class="btn btn-info btn-gradient mb-2 float-right" aria-expanded="false" type="button" data-toggle="collapse" data-target="#create-note-card"  aria-controls="create-note-card">
             Show creation form
         </button>
     <div class="card ">
@@ -125,7 +125,7 @@
                         <input th:field="*{bloodGlucoseLevel}" type="number" step="0.1" min="0" class="form-control" id="blood-glucose-level" name="bloodGlucoseLevel" >
                         <div th:if="${#fields.hasErrors('bloodGlucoseLevel')}" th:errors="*{bloodGlucoseLevel}" class="text-danger"></div>
                     </div>
-                    <button th:text="#{notes.showCreationForm}" type="submit" class="btn btn-primary mt-1">Create note</button>
+                    <button th:text="#{notes.showCreationForm}" type="submit" class="btn btn-info btn-gradient mt-1">Create note</button>
                 </form>
             </div>
         </div>
@@ -153,7 +153,7 @@
                 <strong th:text="#{notes.carbs}">Carbs:</strong> <span th:text="${note.carbs}"></span><br>
                 <strong th:text="#{notes.calories}">Calories:</strong> <span th:text="${note.calories}"></span><br>
                 <strong th:text="#{notes.bloodGlucoseLevel}">Blood Glucose Level:</strong> <span th:text="${note.bloodGlucoseLevel}"></span><br>
-                <a th:text="#{notes.editButton}" th:if="${user != null && user.isAdmin()}" class="btn btn-primary mt-2" th:href="@{/notes/update/{id}(id=${note.id})}">Edit</a>
+                <a th:text="#{notes.editButton}" th:if="${user != null && user.isAdmin()}" class="btn btn-info btn-gradient mt-2" th:href="@{/notes/update/{id}(id=${note.id})}">Edit</a>
                 <a th:text="#{notes.deleteButton}" th:if="${user != null && user.isAdmin()}" class="btn btn-danger mt-2" th:href="@{/notes/delete/{id}(id=${note.id})}">Delete</a>
             </p>
         </div>

@@ -46,8 +46,8 @@ public class ProfileController {
       @RequestParam(name = "language", required = false, defaultValue = "EN") String language,
       @RequestParam(name = "units", required = false) String units,
       @RequestParam(name = "hours", required = false, defaultValue = "24") int hoursFormat,
-      @RequestParam(name = "highBoundNum", required = false) double highBoundNum,
-      @RequestParam(name = "lowerBoundNum", required = false) double lowerBoundNum,
+      @RequestParam(name = "highBoundNum", required = false, defaultValue = "10.0") double highBoundNum,
+      @RequestParam(name = "lowerBoundNum", required = false, defaultValue = "4.5") double lowerBoundNum,
       @RequestParam(name = "highAlertSoundEnabled", required = false) boolean highAlertSoundEnabled,
       @RequestParam(name = "lowAlertSoundEnabled", required = false) boolean lowAlertSoundEnabled,
       Model model) {

@@ -44,6 +44,10 @@ public class Profile {
     return timeFormat;
   }
 
+  public String getUnits() {
+    return units == null ? "mmol" : units;
+  }
+
   public LocalDateTime getCreatedAt() {
     return LocalDateTime.parse(createdAt.replace("Z", ""));
   }
