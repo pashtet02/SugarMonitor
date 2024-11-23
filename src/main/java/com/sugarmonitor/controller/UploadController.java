@@ -6,15 +6,20 @@ import com.sugarmonitor.model.DeviceStatus;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.repos.DeviceStatusRepository;
 import com.sugarmonitor.repos.EntryRepository;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller()
 @RequiredArgsConstructor
+@Slf4j
 public class UploadController {
 
   private final ObjectMapper objectMapper;
@@ -24,18 +29,19 @@ public class UploadController {
 
   @PostMapping("/upload")
   public @ResponseBody ResponseEntity<String> uploadEntries(@RequestBody String requestJSON) {
-    Collection<Entry> entries = null;
+    List<Entry> entries = new ArrayList<>();
     try {
-      entries = objectMapper.readValue(requestJSON, new TypeReference<>() {});
 
-      System.out.println("\n\n\n\nENTRY list:::" + entries);
-      entries.forEach(System.out::println);
+      entries = objectMapper.readValue(requestJSON, new TypeReference<>() {});
+      log.info("Received entries: {}", entries.size());
+
       List<Entry> savedEntries = entryRepository.saveAll(entries);
-      System.out.println("\n\n\n\nENTRY list saved:::" + savedEntries);
-      savedEntries.forEach(System.out::println);
-      System.out.println();
+      log.info("Stored entries: {}", savedEntries.size());
+      for (Entry e : entries) {
+        log.debug("Uploaded entry: {}", e);
+      }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("uploadEntries() Request {}, error message: {}", requestJSON, e.getMessage());
       ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body("FAILURE " + e.getMessage() + " while uploading entries");
     }
@@ -44,20 +50,20 @@ public class UploadController {
 
   @PostMapping("/upload/devicestatus")
   public @ResponseBody ResponseEntity<String> uploadDeviceData(@RequestBody String requestJSON) {
-    Collection<DeviceStatus> deviceStatus = null;
+    List<DeviceStatus> deviceStatuses = new ArrayList<>();
     try {
-      deviceStatus = objectMapper.readValue(requestJSON, new TypeReference<>() {});
-
-      System.out.println("\n\n\n\nDEVICE STATUSES list:::" + deviceStatus);
-      List<DeviceStatus> savedEntries = deviceStatusRepository.saveAll(deviceStatus);
-      System.out.println("\n\n\n\nDEVICE STATUSES saved:::" + savedEntries);
-      // savedEntries.forEach(System.out::println);
-      System.out.println();
+      deviceStatuses = objectMapper.readValue(requestJSON, new TypeReference<>() {});
+      log.info("Received statuses: {}", deviceStatuses);
+      for (DeviceStatus status : deviceStatuses) {
+        log.debug("Uploaded status: {}", status);
+      }
+      List<DeviceStatus> savedEntries = deviceStatusRepository.saveAll(deviceStatuses);
+      log.info("Stored status: {}", savedEntries.size());
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("uploadDeviceData() Request {}, error message: {}", requestJSON, e.getMessage());
       ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body("FAILURE " + e.getMessage() + " while uploading device status");
     }
-    return ResponseEntity.ok("Uploaded " + deviceStatus + " entries");
+    return ResponseEntity.ok("Uploaded " + deviceStatuses.size() + " statuses");
   }
 }
