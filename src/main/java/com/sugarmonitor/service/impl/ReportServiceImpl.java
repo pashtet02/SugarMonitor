@@ -7,6 +7,7 @@ import com.sugarmonitor.dto.Report;
 import com.sugarmonitor.model.Entry;
 import com.sugarmonitor.model.Profile;
 import com.sugarmonitor.service.GraphService;
+import com.sugarmonitor.service.ReportService;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,8 +16,6 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.sugarmonitor.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -104,7 +103,8 @@ public class ReportServiceImpl implements ReportService {
   public double calculateHbA1c(double averageSgv, Profile userProfile) {
     double conversionFactor = !userProfile.getUnits().equals("mmol") ? 46.7 : 2.59;
     double HbA1cConstant = !userProfile.getUnits().equals("mmol") ? 28.7 : 1.59;
-    return parseDouble(String.format("%.1f", (averageSgv + conversionFactor) / HbA1cConstant).replace(",", "."));
+    return parseDouble(
+        String.format("%.1f", (averageSgv + conversionFactor) / HbA1cConstant).replace(",", "."));
   }
 
   private double calculateAverageSgv(List<Entry> entries, Profile activeProfile) {
