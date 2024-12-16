@@ -12,7 +12,7 @@ public interface ReportService {
 
   Report createReport(List<Entry> entries, Profile userProfile, String reportName);
 
-  double calculateHbA1c(double averageSgv);
+  double calculateHbA1c(double averageSgv, Profile userProfile);
 
   double calculateStandardDeviation(List<Entry> entries, Profile activeProfile);
 

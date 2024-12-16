@@ -15,6 +15,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.sugarmonitor.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ReportServiceImpl implements com.sugarmonitor.service.ReportService {
+public class ReportServiceImpl implements ReportService {
 
   private final GraphService graphService;
 
@@ -98,7 +100,6 @@ public class ReportServiceImpl implements com.sugarmonitor.service.ReportService
         .build();
   }
 
-  // TODO fix formulas are incorrect!
   @Override
   public double calculateHbA1c(double averageSgv, Profile userProfile) {
     double conversionFactor = !userProfile.getUnits().equals("mmol") ? 46.7 : 2.59;
