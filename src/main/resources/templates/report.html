@@ -82,13 +82,14 @@
                                     return item.trim().replace("[", "").replace("]", "")
                                 })
 
-                                var values = element.getAttribute("data-values").split(",");
-                                var lowSugarLine = element.getAttribute("data-low-sugar-line");
-                                var highSugarLine = element.getAttribute("data-high-sugar-line");
+                                var values = element.getAttribute("data-values").split(",").map(Number); // Convert values to numbers
+                                var lowSugarLine = parseFloat(element.getAttribute("data-low-sugar-line")); // Convert to number
+                                var highSugarLine = parseFloat(element.getAttribute("data-high-sugar-line")); // Convert to number
 
-                                // Convert the values array to numbers
-                                for (var i = 0; i < values.length; i++) {
-                                    values[i] = parseFloat(values[i]);
+                                // Validate parsed values
+                                if (isNaN(lowSugarLine) || isNaN(highSugarLine)) {
+                                    console.error("Invalid low or high sugar line values:", { lowSugarLine, highSugarLine });
+                                    return; // Stop processing if the values are invalid
                                 }
 
                                 // Create the chart
